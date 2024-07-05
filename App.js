@@ -1,20 +1,16 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import Screen from "./src/Containers/Screen";
+import React, { useState } from "react";
+import { Text, SafeAreaView, View, Button } from "react-native"
 
 export default function App() {
+  const [c, sc] = useState('red')
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Screen>
+      <View style={{ backgroundColor: c, flex: 1, paddingTop: 100 }}>
+        <Text>TO DO </Text>
+        <Button title="ass" onPress={() => { sc('green'); console.log(c) }}></Button>
+      </View>
+    </Screen>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
