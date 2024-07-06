@@ -1,3 +1,6 @@
+import { Colors } from "react-native/Libraries/NewAppScreen"
+import { ScreenDimensions } from "util"
+
 export const COLORS = {
     primary: '#037d50', // MOSS Green
     secondary: '#006400', // Darker Green
@@ -15,5 +18,28 @@ export const STYLES = {
     "Screen": {
         flex: 1,
         backgroundColor: COLORS.light,
-    }
+    },
+    "Text": {
+        fontSize: 24,
+        textAlign: 'center'
+    },
+    "Button": {
+        backgroundColor: COLORS.primary,
+        borderRadius: 5,
+        padding: 20,
+    },
+    "Header": {
+        flexDirection: "row",
+        top: 0,
+        width: '100%',
+        height: '6%',
+        backgroundColor: COLORS.primary,
+
+        // justifyContent: 'center',
+        Text: {
+            fontSize: 24,
+            fontWeight: '500',
+            textAlign: "center"
+        }
+    },
 }

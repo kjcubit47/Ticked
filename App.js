@@ -1,16 +1,24 @@
-import Screen from "./src/Containers/Screen";
+
 import React, { useState } from "react";
-import { Text, SafeAreaView, View, Button } from "react-native"
+import { NavigationContainer } from '@react-navigation/native';
+import LoginScreen from "Containers/LoginScreen";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+const Stack = createNativeStackNavigator();
+import HomeScreen from "Containers/HomeScreen";
+import SignUpScreen from "Containers/SignUpScreen";
+import ListScreen from "Containers/ListScreen";
+
 
 export default function App() {
-  const [c, sc] = useState('red')
   return (
-    <Screen>
-      <View style={{ backgroundColor: c, flex: 1, paddingTop: 100 }}>
-        <Text>TO DO </Text>
-        <Button title="ass" onPress={() => { sc('green'); console.log(c) }}></Button>
-      </View>
-    </Screen>
+    <NavigationContainer >
+      <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="LoginScreen"  >
+        <Stack.Screen name="LoginScreen" component={LoginScreen} />
+        <Stack.Screen name="HomeScreen" component={HomeScreen} />
+        <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+        <Stack.Screen name="ListScreen" component={ListScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
