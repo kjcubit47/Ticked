@@ -11,9 +11,15 @@ function ListScreen({ navigation, route }) {
     const { title } = route.params
     return (
         <Screen style={styles.container}>
-            <Header title={title} leftItem={
-                <IconButton name={'chevron-back'} size={32} color='white' onPress={() => navigation.pop()} />
-            } />
+            <Header title={title}
+                leftItem={
+                    <IconButton name={'chevron-back'} size={32} color='white' onPress={() => navigation.pop()} />
+                }
+                rightItem={
+                    <IconButton name={'ellipsis-horizontal'} size={32} color='white' onPress={() => navigation.pop()} />
+                }
+            />
+
         </Screen>
 
 

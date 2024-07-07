@@ -14,9 +14,10 @@ function Screen({ children, style, statusBarColor = COLORS.primary }) {
     }
     else {
         return (
-            <SafeAreaView style={[STYLES.Screen, style]}>
+            <View style={[STYLES.Screen, style]}>
+                <View style={{ height: '6%', backgroundColor: COLORS.primary }}></View>
                 {children}
-            </SafeAreaView>
+            </View>
         )
     }
 }
