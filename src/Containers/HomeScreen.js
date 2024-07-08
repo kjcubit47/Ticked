@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, FlatList, Modal, TextInput, StyleSheet } from 'react-native';
 import Screen from './Screen';
 import FlatListItem from 'Components/FlatListItem';
@@ -9,84 +9,48 @@ import AppButton from 'Components/Buttons/AppButton';
 import { COLORS } from 'Constants';
 
 import { isAndroid } from 'util';
+import { useDispatch, useSelector } from 'react-redux';
+import store from 'Redux/Store';
 
-const deleteList = () => {
 
-}
+function HomeScreen({ navigation, refreshFromChild }) {
 
-function HomeScreen({ navigation }) {
-    const createNewList = () => {
-        setListCount(listCount + 1)
-        setLists(
-            [...lists,
-            {
-                title: modalInput,
-                id: listCount + 1
-            }
-            ]
-        )
-        setModalVisible(!modalVisible)
-        setModalInput('')
+    const [refresh, setRefresh] = useState(false)
+    if (refreshFromChild != null) {
+        setRefresh(refreshFromChild)
     }
-    const [listCount, setListCount] = useState(0);
-    const [lists, setLists] = useState([])
-    const [modalVisible, setModalVisible] = useState(false);
-    const [modalInput, setModalInput] = useState('')
+    let lists = store.getState().listReducer.lists
+
 
     return (
 
-        <Screen >
+        <Screen  >
 
             {/* Header */}
             <Header
                 title={" Home "}
-
                 rightItem={
-                    <IconButton onPress={() => {
-                        setModalVisible(true);
-                    }} name="add" size={32} color="white" />
+                    <IconButton onPress={() => { navigation.navigate("ListScreen", { item: {}, refresh }); setRefresh(!refresh) }} name="add" size={32} color="white" />
                 }
             />
-
 
 
             {/* List */}
             <View>
                 <FlatList
-                    keyExtractor={item => item.id}
-                    renderItem={({ item }) => <FlatListItem onPress={() => navigation.navigate("ListScreen", { title: item.title, })} title={item.title} />}
-                    data={lists}
 
+                    keyExtractor={(item) => item.id}
+                    renderItem={({ item }) => <FlatListItem title={item.title} onPress={() => { navigation.navigate("ListScreen", { item: item }, refresh); setRefresh(!refresh) }} />}
+                    data={lists}
+                    extraData={refresh}
                     ItemSeparatorComponent={<View style={{
                         height: 1,
                         width: '100%',
                         backgroundColor: COLORS.light,
                     }} />}
-                    ListEmptyComponent={<FlatListItem title={"Create your first list"} onPress={() => setModalVisible(!modalVisible)} />}
+                    ListEmptyComponent={<FlatListItem title={"Create your first list"} onPress={() => { navigation.navigate("ListScreen", { item: {}, refresh }); setRefresh(!refresh) }} />}
                 />
             </View>
-
-
-            {/* Modal */}
-
-            <Modal animationType='slide' presentationStyle='pageSheet' visible={modalVisible}
-                onRequestClose={() => {
-                    setModalVisible(!modalVisible);
-                }}
-            >
-                <Screen style={styles.modal}>
-
-                    {isAndroid() &&
-                        <View style={styles.androidHeader}>
-                            <IconButton size={32} name="close" onPress={() => { setModalInput(""); setModalVisible(!modalVisible) }} />
-                        </View>
-                    }
-
-                    <TextInput keyboardType='default' style={styles.modalInput} onChangeText={setModalInput} />
-                    <AppButton onPress={createNewList} title="Create List"></AppButton>
-                </Screen>
-            </Modal>
-
 
         </Screen >
     );
