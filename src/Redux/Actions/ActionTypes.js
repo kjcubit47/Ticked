@@ -5,4 +5,5 @@ module.exports = {
     SET_LIST_COUNT: "SET_LIST_COUNT",
 
     REFRESH_LISTS: "REFRESH_LISTS",
+    UPDATE_LIST: "UPDATE_LIST"
 }

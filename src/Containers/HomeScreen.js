@@ -30,7 +30,7 @@ function HomeScreen({ navigation, refreshFromChild }) {
             <Header
                 title={" Home "}
                 rightItem={
-                    <IconButton onPress={() => { navigation.navigate("ListScreen", { item: {}, refresh }); setRefresh(!refresh) }} name="add" size={32} color="white" />
+                    <IconButton onPress={() => { navigation.navigate("ListScreen", { item: {}, refresh, newList: true }); setRefresh(!refresh) }} name="add" size={32} color="white" />
                 }
             />
 
@@ -40,7 +40,7 @@ function HomeScreen({ navigation, refreshFromChild }) {
                 <FlatList
 
                     keyExtractor={(item) => item.id}
-                    renderItem={({ item }) => <FlatListItem title={item.title} onPress={() => { navigation.navigate("ListScreen", { item: item }, refresh); setRefresh(!refresh) }} />}
+                    renderItem={({ item }) => <FlatListItem title={item.title} onPress={() => { navigation.navigate("ListScreen", { item: item, newList: false }, refresh); setRefresh(!refresh) }} />}
                     data={lists}
                     extraData={refresh}
                     ItemSeparatorComponent={<View style={{
@@ -48,7 +48,7 @@ function HomeScreen({ navigation, refreshFromChild }) {
                         width: '100%',
                         backgroundColor: COLORS.light,
                     }} />}
-                    ListEmptyComponent={<FlatListItem title={"Create your first list"} onPress={() => { navigation.navigate("ListScreen", { item: {}, refresh }); setRefresh(!refresh) }} />}
+                    ListEmptyComponent={<FlatListItem title={"Create your first list"} onPress={() => { navigation.navigate("ListScreen", { item: {}, refresh, newList: true }); setRefresh(!refresh) }} />}
                 />
             </View>
 

@@ -29,6 +29,27 @@ function listStateReducer(state = initialListState, action) {
                 }),
                 listCount: state.listCount - 1
             }
+        case types.UPDATE_LIST:
+            let i = -1;
+            state.lists.filter((object, index) => {
+                if (object.id == action.payload.id) {
+                    i = index
+                    // object.title = action.payload.title
+                }
+                return true
+            })
+
+            const newState = JSON.parse(JSON.stringify(state.lists))
+            newState[i].title = action.payload.title
+            if (i != -1) {
+
+                return {
+                    ...state,
+                    lists: newState,
+                }
+            } else {
+                return state
+            }
         default: return state
     }
 }

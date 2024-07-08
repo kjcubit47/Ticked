@@ -11,23 +11,45 @@ import { useDispatch } from 'react-redux';
 
 
 function ListScreen({ navigation, route }) {
-    const { item, refresh } = route.params
-    const lists = store.getState().listReducer.lists
+    const { item, refresh, newList } = route.params
     const listCount = store.getState().listReducer.listCount
     const dispatch = useDispatch()
     const [listName, setListName] = useState(item.title)
 
     return (
         <Screen style={styles.container}>
-            <Header title={item.title}
+            <Header
                 leftItem={
-                    <IconButton name={'chevron-back'} size={32} color='white' onPress={() => navigation.navigate("HomeScreen", { refresh: !refresh })} />
+                    <IconButton name={'chevron-back'}
+                        size={32}
+                        color='white'
+                        onPress={() => navigation.navigate("HomeScreen", { refresh: !refresh })}
+                    />
                 }
                 centerItem={
-                    <TextInput onBlur={() => { setListName(listName); dispatch({ type: "ADD_LIST", payload: { title: listName, id: listCount } }); }} autoFocus={item.title != ''} defaultValue={item.title} autoComplete='false' style={STYLES.TextInput} onChangeText={(text) => { setListName(text) }} />
+                    <TextInput
+                        onBlur={() => {
+                            setListName(listName);
+                            if (newList) {
+                                dispatch({ type: "ADD_LIST", payload: { title: listName, id: listCount } });
+                            } else {
+                                dispatch({ type: "UPDATE_LIST", payload: { title: listName, id: item.id } })
+                            }
+                        }}
+                        autoFocus={item.title == null || item.title == ''}
+                        defaultValue={item.title}
+                        autoComplete='false'
+                        style={STYLES.TextInput}
+                        onChangeText={(text) => { setListName(text) }}
+                    />
                 }
                 rightItem={
-                    < IconButton name={'ellipsis-horizontal'} size={32} color='white' onPress={() => navigation.navigate("HomeScreen")} />
+                    < IconButton
+                        name={'ellipsis-horizontal'}
+                        size={32}
+                        color='white'
+                        onPress={() => navigation.navigate("HomeScreen")}
+                    />
                 }
             />
 
