@@ -3,11 +3,13 @@ import types from "Redux/Actions/ActionTypes"
 
 const initialListState = {
     lists: [],
-    listCount: 0
+    listCount: 0,
+    subListCount: 0,
 }
 
 function listStateReducer(state = initialListState, action) {
     switch (action.type) {
+
         case types.SET_LIST_COUNT:
             return {
                 ...state,
@@ -16,39 +18,51 @@ function listStateReducer(state = initialListState, action) {
         case types.ADD_LIST:
             return {
                 ...state,
-                // lists: state.lists.push(action.payload),
                 lists: state.lists.concat(action.payload),
-                // lists: [state.lists, action.payload],
                 listCount: state.listCount + 1
             }
         case types.REMOVE_LIST:
+            let deleteListState = JSON.parse(JSON.stringify(state.lists))
+            deleteListState.filter((object) => {
+                return object.id != action.payload
+            })
             return {
                 ...state,
-                lists: state.lists.filter((object) => {
-                    return object.id != action.payload
-                }),
+                lists: deleteListState,
                 listCount: state.listCount - 1
             }
-        case types.UPDATE_LIST:
-            let i = -1;
+        case types.UPDATE_LIST_NAME:
+            let updateIndex = -1;
             state.lists.filter((object, index) => {
                 if (object.id == action.payload.id) {
-                    i = index
-                    // object.title = action.payload.title
+                    updateIndex = index
                 }
                 return true
             })
 
-            const newState = JSON.parse(JSON.stringify(state.lists))
-            newState[i].title = action.payload.title
-            if (i != -1) {
+            if (updateIndex != -1) {
+                const updatedState = JSON.parse(JSON.stringify(state.lists))
+                updatedState[updateIndex].title = action.payload.title
 
                 return {
                     ...state,
-                    lists: newState,
+                    lists: updatedState,
                 }
             } else {
                 return state
+            }
+        case types.ADD_SUBLIST_ITEM:
+            const newSublistState = JSON.parse(JSON.stringify(state.lists))
+            // newSublistState[parentIndex].sublist = [newSublistState[parentIndex].sublist, action.payload]
+            // newSublistState[parentIndex].sublist.push(action.payload)
+            console.log(action)
+            // newSublistState[action.payload.parentId].sublist.push(action.payload)
+
+            return {
+                ...state,
+                lists: newSublistState,
+                subListCount: state.subListCount + 1
+
             }
         default: return state
     }

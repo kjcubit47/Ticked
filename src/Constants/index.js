@@ -24,7 +24,8 @@ export const STYLES = {
     },
     "Text": {
         fontSize: 24,
-        textAlign: 'center'
+        textAlign: 'center',
+        color: 'white'
     },
     "Button": {
         backgroundColor: COLORS.primary,
@@ -42,7 +43,8 @@ export const STYLES = {
         Text: {
             fontSize: 24,
             fontWeight: '500',
-            textAlign: "center"
+            textAlign: "center",
+            color: 'white'
         }
 
     },
@@ -50,7 +52,9 @@ export const STYLES = {
         padding: 10,
         fontSize: 20,
         width: ScreenDimensions.width * 0.7,
-        backgroundColor: COLORS.secondary
+        backgroundColor: COLORS.secondary,
+        color: 'white',
+        borderRadius: 10
         // marginHorizontal: 100
     }
 }

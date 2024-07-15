@@ -7,9 +7,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import IconButton from 'Components/Buttons/IconButton';
 import AppButton from 'Components/Buttons/AppButton';
 import { COLORS } from 'Constants';
-
-import { isAndroid } from 'util';
-import { useDispatch, useSelector } from 'react-redux';
 import store from 'Redux/Store';
 
 
@@ -40,7 +37,7 @@ function HomeScreen({ navigation, refreshFromChild }) {
                 <FlatList
 
                     keyExtractor={(item) => item.id}
-                    renderItem={({ item }) => <FlatListItem title={item.title} onPress={() => { navigation.navigate("ListScreen", { item: item, newList: false }, refresh); setRefresh(!refresh) }} />}
+                    renderItem={({ item }) => <FlatListItem title={item.title} onPress={() => { navigation.navigate("ListScreen", { itemId: item.id, refresh }); setRefresh(!refresh) }} />}
                     data={lists}
                     extraData={refresh}
                     ItemSeparatorComponent={<View style={{
@@ -48,7 +45,7 @@ function HomeScreen({ navigation, refreshFromChild }) {
                         width: '100%',
                         backgroundColor: COLORS.light,
                     }} />}
-                    ListEmptyComponent={<FlatListItem title={"Create your first list"} onPress={() => { navigation.navigate("ListScreen", { item: {}, refresh, newList: true }); setRefresh(!refresh) }} />}
+                    ListEmptyComponent={<FlatListItem title={"Create your first list"} onPress={() => { navigation.navigate("ListScreen", { itemId: null, refresh }); setRefresh(!refresh) }} />}
                 />
             </View>
 
