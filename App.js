@@ -9,21 +9,25 @@ import SignUpScreen from "Containers/SignUpScreen";
 import ListScreen from "Containers/ListScreen";
 import { Provider } from "react-redux";
 import store from "Redux/Store";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 
 export default function App() {
   return (
-    <Provider store={store}>
+    <GestureHandlerRootView>
 
-      <NavigationContainer >
-        <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="LoginScreen"  >
-          <Stack.Screen name="LoginScreen" component={LoginScreen} />
-          <Stack.Screen name="HomeScreen" component={HomeScreen} />
-          <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
-          <Stack.Screen name="ListScreen" component={ListScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </Provider>
+      <Provider store={store}>
+
+        <NavigationContainer >
+          <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="LoginScreen"  >
+            <Stack.Screen name="LoginScreen" component={LoginScreen} />
+            <Stack.Screen name="HomeScreen" component={HomeScreen} />
+            <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
+            <Stack.Screen name="ListScreen" component={ListScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Provider>
+    </GestureHandlerRootView>
   );
 }
 

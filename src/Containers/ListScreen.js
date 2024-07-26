@@ -82,7 +82,11 @@ function ListScreen({ navigation, route }) {
                     renderItem={({ item }) =>
                         <>
                             <SublistItem
+                                parentId={itemId}
+                                itemId={item.id}
                                 title={item.title}
+                                completeable={true}
+                                complete={item.complete}
                             />
 
                             <ListSeparator />
