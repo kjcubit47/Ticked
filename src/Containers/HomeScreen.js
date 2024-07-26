@@ -61,6 +61,7 @@ function HomeScreen({ navigation, refreshFromChild }) {
                                 navigation.navigate("ListScreen", { itemId: lists.length, refresh }); setRefresh(!refresh)
                             }}
                         />}
+
                 />
             </View>
 
