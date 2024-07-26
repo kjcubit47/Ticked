@@ -1,20 +1,28 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, FlatList, Text, TextInput } from 'react-native';
-
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, FlatList, Text, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
+import { COLORS, STYLES } from 'Constants';
 import Screen from './Screen';
-import AppText from 'Components/AppText';
 import Header from 'Components/Header/Header';
 import IconButton from 'Components/Buttons/IconButton';
-import { STYLES } from 'Constants';
-import store from 'Redux/Store';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import FlatListItem from 'Components/FlatListItem';
+import AddTaskInput from 'Components/AddTaskInput';
+import ListSeparator from 'Components/ListSeparator';
+
+import ListSettingsModal from 'Components/Modals/ListSettingsModal';
+import SublistItem from 'Components/SublistItem';
 
 
 function ListScreen({ navigation, route }) {
-    const { item, refresh, newList } = route.params
-    const listCount = store.getState().listReducer.listCount
-    const dispatch = useDispatch()
-    const [listName, setListName] = useState(item.title)
+    let listStates = useSelector((state) => state.listReducer)
+    // Route Parameters : 
+    // item : the selected list data
+    // refresh : utility/workaround for flatlist refreshing
+    const { itemId, refresh } = route.params
+    const [listName, setListName] = listStates.lists[itemId] ? useState(listStates.lists[itemId].title) : useState('')
+    const [listRefresher, setListRefresher] = useState(true)
+    const [modalVisible, setModalVisible] = useState(false)
+    const dispatch = useDispatch();
 
     return (
         <Screen style={styles.container}>
@@ -29,18 +37,25 @@ function ListScreen({ navigation, route }) {
                 centerItem={
                     <TextInput
                         onBlur={() => {
-                            setListName(listName);
-                            if (newList) {
-                                dispatch({ type: "ADD_LIST", payload: { title: listName, id: listCount } });
-                            } else {
-                                dispatch({ type: "UPDATE_LIST", payload: { title: listName, id: item.id } })
+                            if (listName == '') {
+
                             }
+                            else if (listStates.lists[itemId]) {
+                                dispatch({ type: "UPDATE_LIST_NAME", payload: { id: itemId, title: listName } })
+                            }
+                            else {
+                                dispatch({ type: "ADD_LIST", payload: { title: listName, id: itemId, sublist: [] } })
+
+                            }
+                            setListRefresher(!listRefresher)
                         }}
-                        autoFocus={item.title == null || item.title == ''}
-                        defaultValue={item.title}
+                        autoFocus={listName == ''}
+                        defaultValue={listName}
                         autoComplete='false'
                         style={STYLES.TextInput}
-                        onChangeText={(text) => { setListName(text) }}
+                        onChangeText={(text) => {
+                            setListName(text);
+                        }}
                     />
                 }
                 rightItem={
@@ -48,19 +63,54 @@ function ListScreen({ navigation, route }) {
                         name={'ellipsis-horizontal'}
                         size={32}
                         color='white'
-                        onPress={() => navigation.navigate("HomeScreen")}
+                        onPress={() => setModalVisible(true)}
                     />
                 }
             />
 
-        </Screen >
+            <View style={{ flex: 1, width: '100%', height: '100%' }}>
+                {/* flatlist here */}
+                <FlatList
+                    style={{ backgroundColor: COLORS.flatListBackground }}
+                    keyExtractor={(item) => item.id}
+                    renderItem={({ item }) =>
+                        <>
+                            <SublistItem
+                                title={item.title}
+                            />
 
+                            <ListSeparator />
+                        </>
+                    }
+                    data={listStates.lists[itemId] ? listStates.lists[itemId].sublist : []}
+                    extraData={listRefresher}
+                // ItemSeparatorComponent={<ListSeparator />}
+
+                />
+            </View>
+            <AddTaskInput style={{ margin: 10 }} parentId={itemId} />
+
+            <ListSettingsModal
+                refresh={listRefresher}
+                setRefresh={setListRefresher}
+                navigation={navigation}
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}
+                listId={itemId}
+            />
+
+        </Screen >
 
     );
 }
-
 const styles = StyleSheet.create({
+    container: {
+        backgroundColor: COLORS.primary,
+        alignItems: 'center',
+        // padding: 10,
 
+    },
+    textBox: { margin: 10, backgroundColor: COLORS.secondary, color: COLORS.white, }
 });
 
 export default ListScreen;

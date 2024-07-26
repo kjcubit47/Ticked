@@ -7,10 +7,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import IconButton from 'Components/Buttons/IconButton';
 import AppButton from 'Components/Buttons/AppButton';
 import { COLORS } from 'Constants';
-
-import { isAndroid } from 'util';
-import { useDispatch, useSelector } from 'react-redux';
 import store from 'Redux/Store';
+import ListSeparator from 'Components/ListSeparator';
 
 
 function HomeScreen({ navigation, refreshFromChild }) {
@@ -28,27 +26,41 @@ function HomeScreen({ navigation, refreshFromChild }) {
 
             {/* Header */}
             <Header
-                title={" Home "}
+                title={" My Lists "}
                 rightItem={
-                    <IconButton onPress={() => { navigation.navigate("ListScreen", { item: {}, refresh, newList: true }); setRefresh(!refresh) }} name="add" size={32} color="white" />
+                    <IconButton
+                        name="add"
+                        size={32}
+                        color="white"
+                        onPress={() => {
+                            navigation.navigate("ListScreen", { itemId: lists.length, refresh }); setRefresh(!refresh)
+                        }}
+                    />
                 }
             />
 
 
             {/* List */}
-            <View>
+            <View style={{ flex: 1, width: '100%', height: '100%' }}>
                 <FlatList
+                    style={{ backgroundColor: COLORS.flatListBackground }}
 
                     keyExtractor={(item) => item.id}
-                    renderItem={({ item }) => <FlatListItem title={item.title} onPress={() => { navigation.navigate("ListScreen", { item: item, newList: false }, refresh); setRefresh(!refresh) }} />}
+                    renderItem={({ item }) =>
+                        <FlatListItem title={item.title}
+                            onPress={() => {
+                                navigation.navigate("ListScreen", { itemId: item.id, refresh }); setRefresh(!refresh)
+                            }}
+                        />}
                     data={lists}
                     extraData={refresh}
-                    ItemSeparatorComponent={<View style={{
-                        height: 1,
-                        width: '100%',
-                        backgroundColor: COLORS.light,
-                    }} />}
-                    ListEmptyComponent={<FlatListItem title={"Create your first list"} onPress={() => { navigation.navigate("ListScreen", { item: {}, refresh, newList: true }); setRefresh(!refresh) }} />}
+                    ItemSeparatorComponent={<ListSeparator />}
+                    ListEmptyComponent={
+                        <FlatListItem title={"Create your first list"}
+                            onPress={() => {
+                                navigation.navigate("ListScreen", { itemId: lists.length, refresh }); setRefresh(!refresh)
+                            }}
+                        />}
                 />
             </View>
 

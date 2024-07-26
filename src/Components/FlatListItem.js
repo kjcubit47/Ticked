@@ -2,9 +2,9 @@ import { STYLES } from 'Constants';
 import React from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { COLORS } from 'Constants';
-function FlatListItem({ title, onPress, style }) {
+function FlatListItem({ title, onPress, style, parentStyle }) {
     return (
-        <TouchableOpacity onPress={onPress}>
+        <TouchableOpacity style={[parentStyle, { flex: 1 }]} onPress={onPress}>
 
             <View style={[styles.item, style]}>
                 <Text style={STYLES.Text}>{title}</Text>
@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
         padding: 10,
         height: 60,
         justifyContent: 'center'
-        // marginVertical: 8,
     }
 });
 
