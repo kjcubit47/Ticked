@@ -4,7 +4,6 @@ import types from "Redux/Actions/ActionTypes"
 const initialListState = {
     lists: [],
     listCount: 0,
-    subListCount: 0,
 }
 
 function listStateReducer(state = initialListState, action) {
@@ -21,9 +20,10 @@ function listStateReducer(state = initialListState, action) {
                 lists: state.lists.concat(action.payload),
                 listCount: state.listCount + 1
             }
-        case types.REMOVE_LIST:
+        case types.DELETE_LIST:
             let deleteListState = JSON.parse(JSON.stringify(state.lists))
-            deleteListState.filter((object) => {
+            deleteListState = deleteListState.filter((object) => {
+
                 return object.id != action.payload
             })
             return {
@@ -53,15 +53,10 @@ function listStateReducer(state = initialListState, action) {
             }
         case types.ADD_SUBLIST_ITEM:
             const newSublistState = JSON.parse(JSON.stringify(state.lists))
-            // newSublistState[parentIndex].sublist = [newSublistState[parentIndex].sublist, action.payload]
-            // newSublistState[parentIndex].sublist.push(action.payload)
-            console.log(action)
-            // newSublistState[action.payload.parentId].sublist.push(action.payload)
-
+            newSublistState[action.payload.parentId].sublist.push(action.payload)
             return {
                 ...state,
                 lists: newSublistState,
-                subListCount: state.subListCount + 1
 
             }
         default: return state

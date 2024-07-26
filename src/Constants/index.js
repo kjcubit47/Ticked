@@ -15,6 +15,7 @@ export const COLORS = {
     light: "#d8dee4",
     dark: "#0c0c0c",
     danger: "#ff5252",
+    flatListBackground: '#59647e'
 }
 
 export const STYLES = {
@@ -48,7 +49,7 @@ export const STYLES = {
         }
 
     },
-    TextInput: {
+    "TextInput": {
         padding: 10,
         fontSize: 20,
         width: ScreenDimensions.width * 0.7,
@@ -56,5 +57,9 @@ export const STYLES = {
         color: 'white',
         borderRadius: 10
         // marginHorizontal: 100
+    },
+    "SettingsModalButton": {
+        width: '80%',
+        margin: 5
     }
 }
