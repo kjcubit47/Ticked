@@ -11,6 +11,7 @@ import ListSeparator from 'Components/ListSeparator';
 
 import ListSettingsModal from 'Components/Modals/ListSettingsModal';
 import SublistItem from 'Components/SublistItem';
+import { isAndroid } from 'util';
 
 
 function ListScreen({ navigation, route }) {
@@ -19,6 +20,7 @@ function ListScreen({ navigation, route }) {
     // item : the selected list data
     // refresh : utility/workaround for flatlist refreshing
     const { itemId, refresh } = route.params
+    const [listNameFocused, setListNameFocused] = useState(false)
     const [listName, setListName] = listStates.lists[itemId] ? useState(listStates.lists[itemId].title) : useState('')
     const [listRefresher, setListRefresher] = useState(true)
     const [modalVisible, setModalVisible] = useState(false)
@@ -37,6 +39,7 @@ function ListScreen({ navigation, route }) {
                 centerItem={
                     <TextInput
                         onBlur={() => {
+                            setListNameFocused(false)
                             if (listName == '') {
 
                             }
@@ -49,10 +52,13 @@ function ListScreen({ navigation, route }) {
                             }
                             setListRefresher(!listRefresher)
                         }}
+                        onFocus={() => setListNameFocused(true)}
                         autoFocus={listName == ''}
                         defaultValue={listName}
                         autoComplete='false'
-                        style={STYLES.TextInput}
+                        style={[STYLES.TextInput, {
+                            marginBottom: (isAndroid() && listNameFocused) ? 10 : 0,
+                        }]}
                         onChangeText={(text) => {
                             setListName(text);
                         }}
@@ -110,7 +116,8 @@ const styles = StyleSheet.create({
         // padding: 10,
 
     },
-    textBox: { margin: 10, backgroundColor: COLORS.secondary, color: COLORS.white, }
+    textBox: { margin: 10, backgroundColor: COLORS.secondary, color: COLORS.white, },
+
 });
 
 export default ListScreen;

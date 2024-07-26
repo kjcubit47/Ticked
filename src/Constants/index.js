@@ -1,3 +1,4 @@
+import { StyleSheet } from "react-native"
 import { Colors } from "react-native/Libraries/NewAppScreen"
 import { ScreenDimensions } from "util"
 
@@ -63,3 +64,7 @@ export const STYLES = {
         margin: 5
     }
 }
+
+// StyleSheet.create({
+//     a : {minHeight : }
+// })
