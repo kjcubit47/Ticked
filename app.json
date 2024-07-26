@@ -2,7 +2,6 @@
   "expo": {
     "name": "TodoApp",
     "slug": "TodoApp",
-    "jsEngine": "hermes",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,12 +12,9 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "jsEngine": "jsc",
       "supportsTablet": true
     },
     "android": {
-      "jsEngine": "jsc",
-
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"

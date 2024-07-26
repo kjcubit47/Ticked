@@ -11,7 +11,6 @@ function AddTaskInput({ parentId, style }) {
     const dispatch = useDispatch()
     const [newTask, setNewTask] = useState('')
     const [inputFocused, setInputFocused] = useState(false)
-
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -19,14 +18,12 @@ function AddTaskInput({ parentId, style }) {
                 [
                     styles.container,
                     style
-
                 ]
             }
         >
             <View style={{ backgroundColor: COLORS.secondary, alignItems: 'center', flexDirection: 'row', marginTop: 5, marginBottom: 15, borderRadius: 10 }}>
                 <TextInput
                     editable={listStates.lists[parentId] != undefined}
-
                     placeholder='Add an item'
                     placeholderTextColor={'white'}
                     style={[STYLES.TextInput, styles.textBox]}
@@ -37,7 +34,6 @@ function AddTaskInput({ parentId, style }) {
                     onFocus={() => {
                         if (listStates.lists[parentId]) {
                             setInputFocused(true)
-
                         }
 
                     }}
@@ -46,7 +42,6 @@ function AddTaskInput({ parentId, style }) {
 
                             setInputFocused(false)
                             setNewTask('')
-
                         }
 
                     }}
@@ -56,7 +51,6 @@ function AddTaskInput({ parentId, style }) {
                             setInputFocused(false)
                             dispatch({ type: "ADD_SUBLIST_ITEM", payload: { title: newTask, id: listStates.lists[parentId].sublist.length, parentId: parentId } })
                             setNewTask('')
-
                         }
                     }}
                 />
@@ -72,7 +66,6 @@ function AddTaskInput({ parentId, style }) {
 
             {inputFocused &&
                 <View style={{ flexDirection: 'row', backgroundColor: COLORS.danger, width: '90%' }}>
-
                     <IconButton size={32} name={'add'} color={COLORS.white} />
                     <IconButton size={32} name={'add'} color={COLORS.white} />
                     <IconButton size={32} name={'add'} color={COLORS.white} />
@@ -92,7 +85,6 @@ const styles = StyleSheet.create({
 
     },
     textBox: { margin: 10, backgroundColor: COLORS.secondary, color: COLORS.white, }
-
 });
 
 export default AddTaskInput;

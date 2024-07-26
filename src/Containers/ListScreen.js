@@ -15,7 +15,6 @@ import SublistItem from 'Components/SublistItem';
 
 function ListScreen({ navigation, route }) {
     let listStates = useSelector((state) => state.listReducer)
-
     // Route Parameters : 
     // item : the selected list data
     // refresh : utility/workaround for flatlist refreshing
@@ -52,7 +51,6 @@ function ListScreen({ navigation, route }) {
                         }}
                         autoFocus={listName == ''}
                         defaultValue={listName}
-
                         autoComplete='false'
                         style={STYLES.TextInput}
                         onChangeText={(text) => {
@@ -66,18 +64,9 @@ function ListScreen({ navigation, route }) {
                         size={32}
                         color='white'
                         onPress={() => setModalVisible(true)}
-
                     />
                 }
             />
-            <View style={{ flex: 1 }}>
-                {/* {listObj.id ?
-                    <FlatList
-                        data={store.getState().listReducer.lists[listObj.id].sublists}
-                        renderItem={(item) => {
-                            <View style={{ backgroundColor: 'red', flex: 1 }}></View>
-                        }}
-                    /> :
 
             <View style={{ flex: 1, width: '100%', height: '100%' }}>
                 {/* flatlist here */}
@@ -110,7 +99,6 @@ function ListScreen({ navigation, route }) {
                 listId={itemId}
             />
 
-
         </Screen >
 
     );
@@ -123,6 +111,6 @@ const styles = StyleSheet.create({
 
     },
     textBox: { margin: 10, backgroundColor: COLORS.secondary, color: COLORS.white, }
-
 });
+
 export default ListScreen;
