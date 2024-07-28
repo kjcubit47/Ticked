@@ -16,6 +16,7 @@ import { isAndroid } from 'util';
 
 function ListScreen({ navigation, route }) {
     let listStates = useSelector((state) => state.listReducer)
+
     // Route Parameters : 
     // item : the selected list data
     // refresh : utility/workaround for flatlist refreshing
@@ -25,6 +26,10 @@ function ListScreen({ navigation, route }) {
     const [listRefresher, setListRefresher] = useState(true)
     const [modalVisible, setModalVisible] = useState(false)
     const dispatch = useDispatch();
+
+    function refreshForChild() {
+        setListRefresher(!listRefresher)
+    }
 
     return (
         <Screen style={styles.container}>
@@ -85,8 +90,9 @@ function ListScreen({ navigation, route }) {
                                 parentId={itemId}
                                 itemId={item.id}
                                 title={item.title}
-                                completeable={true}
                                 complete={item.complete}
+                                refresh={refreshForChild}
+
                             />
 
                             <ListSeparator />

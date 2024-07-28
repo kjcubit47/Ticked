@@ -1,32 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, Animated } from 'react-native';
 import IconButton from './Buttons/IconButton';
 import { COLORS, STYLES } from 'Constants';
 import { Swipeable } from 'react-native-gesture-handler';
+import { useDispatch } from 'react-redux';
 
 const renderRightActions = (
-    progress,
-    dragAnimatedValue
+    dispatch,
+    itemId,
+    parentId,
+    refresh
 ) => {
-    const opacity = dragAnimatedValue.interpolate({
-        inputRange: [-150, 0],
-        outputRange: [1, 0],
-        extrapolate: 'clamp',
-    });
+
     return (
         <Animated.View style={{ justifyContent: 'center', backgroundColor: COLORS.danger }}>
-            <TouchableOpacity>
-                <IconButton size={32} color={COLORS.light} name='trash' />
-            </TouchableOpacity>
+            <IconButton
+                name='trash'
+                onPress={() => {
+                    refresh()
+                    dispatch({ type: "DELETE_SUBLIST_ITEM", payload: { parentId, itemId } })
+                }} />
+
         </Animated.View>
     );
 };
 
 
-function SublistItem({ title, complete, completeable, style, onPress, IconOnPress, parentId, itemId }) {
+function SublistItem({ title, complete, style, onPress, IconOnPress, parentId, itemId, refresh }) {
+    const [itemComplete, setItemComplete] = useState(complete)
+    const dispatch = useDispatch()
+
     return (
         <Swipeable
-            renderRightActions={renderRightActions}
+            renderRightActions={() => renderRightActions(dispatch, parentId, itemId,)}
             friction={2}
             overshootRight={false}
         >
@@ -34,18 +40,18 @@ function SublistItem({ title, complete, completeable, style, onPress, IconOnPres
             <TouchableOpacity style={styles.container} onPress={onPress}>
                 <View style={{ flex: 1 }}>
                     <Text style={STYLES.Text}>{title}</Text>
-
                 </View>
-                {completeable && !complete &&
-                    <TouchableOpacity onPress={IconOnPress} style={styles.iconButtons}>
-                        <IconButton name={'square-outline'} size={32} color={'white'} />
-                    </TouchableOpacity>
-                }
-                {completeable && complete &&
-                    <TouchableOpacity onPress={IconOnPress} style={styles.iconButtons}>
-                        <IconButton name={'checkmark'} size={32} color={'white'} />
-                    </TouchableOpacity>
-                }
+                <IconButton
+                    onPress={
+                        () => {
+
+                            setItemComplete(!itemComplete);
+                            dispatch({ type: 'SET_ITEM_COMPLETE', payload: { parentId, itemId, complete: !itemComplete } })
+                            refresh();
+                        }
+                    }
+                    style={styles.iconButtons}
+                    name={itemComplete == true ? 'checkmark' : 'square-outline'} />
 
             </TouchableOpacity>
         </Swipeable>

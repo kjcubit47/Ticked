@@ -59,6 +59,13 @@ function listStateReducer(state = initialListState, action) {
                 lists: newSublistState,
 
             }
+        case types.SET_ITEM_COMPLETE:
+            const SetItemCompleteState = JSON.parse(JSON.stringify(state.lists))
+            SetItemCompleteState[action.payload.parentId].sublist[action.payload.itemId].complete = action.payload.complete
+            return {
+                ...state,
+                lists: SetItemCompleteState
+            }
         default: return state
     }
 }

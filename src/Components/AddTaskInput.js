@@ -49,7 +49,7 @@ function AddTaskInput({ parentId, style }) {
                         if (listStates.lists[parentId]) {
 
                             setInputFocused(false)
-                            dispatch({ type: "ADD_SUBLIST_ITEM", payload: { title: newTask, id: listStates.lists[parentId].sublist.length, parentId: parentId } })
+                            dispatch({ type: "ADD_SUBLIST_ITEM", payload: { title: newTask, id: listStates.lists[parentId].sublist.length, parentId: parentId, complete: false } })
                             setNewTask('')
                         }
                     }}
