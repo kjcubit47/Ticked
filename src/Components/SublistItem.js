@@ -3,32 +3,34 @@ import { View, StyleSheet, TouchableOpacity, Text, Animated } from 'react-native
 import IconButton from './Buttons/IconButton';
 import { COLORS, STYLES } from 'Constants';
 import { Swipeable } from 'react-native-gesture-handler';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-const renderRightActions = (
-    dispatch,
-    itemId,
-    parentId,
-    refresh
-) => {
 
-    return (
-        <Animated.View style={{ justifyContent: 'center', backgroundColor: COLORS.danger }}>
-            <IconButton
-                name='trash'
-                onPress={() => {
-                    refresh()
-                    dispatch({ type: "DELETE_SUBLIST_ITEM", payload: { parentId, itemId } })
-                }} />
-
-        </Animated.View>
-    );
-};
 
 
 function SublistItem({ title, complete, style, onPress, IconOnPress, parentId, itemId, refresh }) {
     const [itemComplete, setItemComplete] = useState(complete)
+    const sublistState = useSelector(state => state.listReducer.lists[parentId].sublist)
     const dispatch = useDispatch()
+
+    const renderRightActions = (
+        dispatch,
+        itemId,
+    ) => {
+
+        return (
+            <Animated.View style={{ justifyContent: 'center', backgroundColor: COLORS.danger }}>
+                <IconButton
+                    name='trash'
+                    onPress={() => {
+                        refresh()
+                        dispatch({ type: "DELETE_SUBLIST_ITEM", payload: { parentId: parentId, itemId: itemId } })
+                    }} />
+
+            </Animated.View>
+        );
+    };
+
 
     return (
         <Swipeable

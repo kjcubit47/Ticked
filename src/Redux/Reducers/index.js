@@ -66,6 +66,13 @@ function listStateReducer(state = initialListState, action) {
                 ...state,
                 lists: SetItemCompleteState
             }
+        case types.DELETE_SUBLIST_ITEM:
+            const deleteSublistState = JSON.parse(JSON.stringify(state.lists))
+            deleteSublistState[action.payload.parentId].sublist = deleteSublistState[action.payload.parentId].sublist.filter(item => { return item.id !== action.payload.itemId })
+            return {
+                ...state,
+                lists: deleteSublistState
+            }
         default: return state
     }
 }
