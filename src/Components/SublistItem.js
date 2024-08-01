@@ -1,22 +1,21 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, Animated } from 'react-native';
+import { StyleSheet, TouchableOpacity, Text, Animated } from 'react-native';
 import IconButton from './Buttons/IconButton';
 import { COLORS, STYLES } from 'Constants';
 import { Swipeable } from 'react-native-gesture-handler';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 
 
 
-function SublistItem({ title, complete, important, style, onPress, IconOnPress, parentId, itemId, refresh }) {
-    const [itemComplete, setItemComplete] = useState(complete)
-    const [itemImportant, setItemImportant] = useState(important)
-    // const sublistState = useSelector(state => state.listReducer.lists[parentId].sublist)
+function SublistItem({ style, onPress, refresh, item }) {
+    const [itemComplete, setItemComplete] = useState(item.complete)
+    const [itemImportant, setItemImportant] = useState(item.important)
     const dispatch = useDispatch()
 
     const renderRightActions = (
         dispatch,
-        itemId,
+        item
     ) => {
 
         return (
@@ -25,7 +24,7 @@ function SublistItem({ title, complete, important, style, onPress, IconOnPress, 
                     name='trash'
                     onPress={() => {
                         refresh()
-                        dispatch({ type: "DELETE_SUBLIST_ITEM", payload: { parentId: parentId, itemId: itemId } })
+                        dispatch({ type: "DELETE_SUBLIST_ITEM", payload: { parentId: item.parentId, itemId: item.id } })
                     }} />
 
             </Animated.View>
@@ -35,7 +34,7 @@ function SublistItem({ title, complete, important, style, onPress, IconOnPress, 
 
     return (
         <Swipeable
-            renderRightActions={() => renderRightActions(dispatch, parentId, itemId,)}
+            renderRightActions={() => renderRightActions(dispatch, item)}
             friction={2}
             overshootRight={false}
         >
@@ -46,19 +45,20 @@ function SublistItem({ title, complete, important, style, onPress, IconOnPress, 
                         () => {
 
                             setItemImportant(!itemImportant);
-                            dispatch({ type: 'SET_SUBLIST_IMPORTANT', payload: { parentId, itemId, important: !itemImportant } })
+                            dispatch({ type: 'SET_SUBLIST_IMPORTANT', payload: { parentId: item.parentId, itemId: item.id, important: !itemImportant } })
                             refresh();
                         }
                     }
                     style={styles.iconLeft}
                     name={itemImportant == true ? 'star' : 'star-outline'}
                     color={itemImportant == true ? 'yellow' : COLORS.light} />
-                <Text style={STYLES.Text}>{title}</Text>
+                <Text style={STYLES.Text}>{item.title}</Text>
                 <IconButton
                     onPress={
                         () => {
                             setItemComplete(!itemComplete);
-                            dispatch({ type: 'SET_ITEM_COMPLETE', payload: { parentId, itemId, complete: !itemComplete } })
+                            console.log({ parentId: item.parentId, itemId: item.id, complete: !itemComplete })
+                            dispatch({ type: 'SET_ITEM_COMPLETE', payload: { parentId: item.parentId, itemId: item.id, complete: !itemComplete } })
                             refresh();
                         }
                     }

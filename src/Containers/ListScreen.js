@@ -88,12 +88,8 @@ function ListScreen({ navigation, route }) {
                     renderItem={({ item }) =>
                         <>
                             <SublistItem
-                                parentId={itemId}
-                                itemId={item.id}
-                                title={item.title}
-                                complete={item.complete}
+                                item={item}
                                 refresh={refreshForChild}
-                                important={item.important}
                                 onPress={() => { navigation.navigate("SublistDetailScreen", { item: item }) }}
                             />
 
