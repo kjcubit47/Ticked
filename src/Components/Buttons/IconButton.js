@@ -1,10 +1,11 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-function IconButton({ onPress, name, size, color, style }) {
+import { COLORS } from 'Constants';
+function IconButton({ onPress, name, size = 32, color = COLORS.light, style }) {
     return (
-        <TouchableOpacity onPress={onPress}>
-            <Ionicons style={[{ paddingHorizontal: 10 }, style]} name={name} size={size} color={color}></Ionicons>
+        <TouchableOpacity style={[{ paddingHorizontal: 10 }, style]} onPress={onPress}>
+            <Ionicons name={name} size={size} color={color}></Ionicons>
         </TouchableOpacity>
     );
 }

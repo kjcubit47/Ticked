@@ -59,7 +59,38 @@ function listStateReducer(state = initialListState, action) {
                 lists: newSublistState,
 
             }
+        case types.SET_ITEM_COMPLETE:
+            const SetItemCompleteState = JSON.parse(JSON.stringify(state.lists))
+            SetItemCompleteState[action.payload.parentId].sublist[action.payload.itemId].complete = action.payload.complete
+            return {
+                ...state,
+                lists: SetItemCompleteState
+            }
+        case types.DELETE_SUBLIST_ITEM:
+            const deleteSublistState = JSON.parse(JSON.stringify(state.lists))
+            deleteSublistState[action.payload.parentId].sublist = deleteSublistState[action.payload.parentId].sublist.filter(item => { return item.id !== action.payload.itemId })
+            return {
+                ...state,
+                lists: deleteSublistState
+            }
+        case types.SET_SUBLIST_IMPORTANT:
+            const setSublistImportantState = JSON.parse(JSON.stringify(state.lists))
+            setSublistImportantState[action.payload.parentId].sublist[action.payload.itemId].important = action.payload.important
+
+            // SORT BY IMPORTANT -- SHOULD BE FIRST
+
+            // setSublistImportantState[action.payload.parentId].sublist.sort((x, y) => {
+            //     return (x.important === y.important) ? 0 : x.important ? -1 : 1;
+
+            // })
+            return {
+                ...state,
+                lists: setSublistImportantState
+            }
+
+
         default: return state
+
     }
 }
 
