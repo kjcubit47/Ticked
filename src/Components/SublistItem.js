@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 function SublistItem({ title, complete, important, style, onPress, IconOnPress, parentId, itemId, refresh }) {
     const [itemComplete, setItemComplete] = useState(complete)
     const [itemImportant, setItemImportant] = useState(important)
-    const sublistState = useSelector(state => state.listReducer.lists[parentId].sublist)
+    // const sublistState = useSelector(state => state.listReducer.lists[parentId].sublist)
     const dispatch = useDispatch()
 
     const renderRightActions = (

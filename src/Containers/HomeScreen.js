@@ -9,6 +9,7 @@ import AppButton from 'Components/Buttons/AppButton';
 import { COLORS } from 'Constants';
 import store from 'Redux/Store';
 import ListSeparator from 'Components/ListSeparator';
+import { genericLists } from 'util';
 
 
 function HomeScreen({ navigation, refreshFromChild }) {

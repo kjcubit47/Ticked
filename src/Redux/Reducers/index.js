@@ -76,6 +76,13 @@ function listStateReducer(state = initialListState, action) {
         case types.SET_SUBLIST_IMPORTANT:
             const setSublistImportantState = JSON.parse(JSON.stringify(state.lists))
             setSublistImportantState[action.payload.parentId].sublist[action.payload.itemId].important = action.payload.important
+
+            // SORT BY IMPORTANT -- SHOULD BE FIRST
+
+            // setSublistImportantState[action.payload.parentId].sublist.sort((x, y) => {
+            //     return (x.important === y.important) ? 0 : x.important ? -1 : 1;
+
+            // })
             return {
                 ...state,
                 lists: setSublistImportantState

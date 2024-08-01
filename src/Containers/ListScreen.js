@@ -12,6 +12,7 @@ import ListSeparator from 'Components/ListSeparator';
 import ListSettingsModal from 'Components/Modals/ListSettingsModal';
 import SublistItem from 'Components/SublistItem';
 import { isAndroid } from 'util';
+import { genericSublists } from 'util';
 
 
 function ListScreen({ navigation, route }) {
@@ -93,6 +94,7 @@ function ListScreen({ navigation, route }) {
                                 complete={item.complete}
                                 refresh={refreshForChild}
                                 important={item.important}
+                                onPress={() => { navigation.navigate("SublistDetailScreen", { item: item }) }}
                             />
 
                             <ListSeparator />

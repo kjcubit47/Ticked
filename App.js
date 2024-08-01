@@ -7,10 +7,10 @@ const Stack = createNativeStackNavigator();
 import HomeScreen from "Containers/HomeScreen";
 import SignUpScreen from "Containers/SignUpScreen";
 import ListScreen from "Containers/ListScreen";
+import SublistDetailScreen from "Containers/SublistDetailScreen";
 import { Provider } from "react-redux";
 import store from "Redux/Store";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-
 
 export default function App() {
   return (
@@ -24,6 +24,7 @@ export default function App() {
             <Stack.Screen name="HomeScreen" component={HomeScreen} />
             <Stack.Screen name="SignUpScreen" component={SignUpScreen} />
             <Stack.Screen name="ListScreen" component={ListScreen} />
+            <Stack.Screen name="SublistDetailScreen" component={SublistDetailScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>
