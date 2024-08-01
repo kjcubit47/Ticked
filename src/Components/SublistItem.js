@@ -3,14 +3,18 @@ import { StyleSheet, TouchableOpacity, Text, Animated } from 'react-native';
 import IconButton from './Buttons/IconButton';
 import { COLORS, STYLES } from 'Constants';
 import { Swipeable } from 'react-native-gesture-handler';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 
 
 function SublistItem({ style, onPress, refresh, item }) {
-    const [itemComplete, setItemComplete] = useState(item.complete)
-    const [itemImportant, setItemImportant] = useState(item.important)
+    const stateItem = useSelector(state => state.listReducer.lists[item.parentId].sublist[item.id])
+    // const [itemComplete, setItemComplete] = useState(item.complete)
+    // const [itemImportant, setItemImportant] = useState(item.important)
+    const [itemComplete, setItemComplete] = useState(stateItem.complete)
+    const [itemImportant, setItemImportant] = useState(stateItem.important)
+
     const dispatch = useDispatch()
 
     const renderRightActions = (
@@ -50,20 +54,19 @@ function SublistItem({ style, onPress, refresh, item }) {
                         }
                     }
                     style={styles.iconLeft}
-                    name={itemImportant == true ? 'star' : 'star-outline'}
-                    color={itemImportant == true ? 'yellow' : COLORS.light} />
+                    name={stateItem.important == true ? 'star' : 'star-outline'}
+                    color={stateItem.important == true ? 'yellow' : COLORS.light} />
                 <Text style={STYLES.Text}>{item.title}</Text>
                 <IconButton
                     onPress={
                         () => {
                             setItemComplete(!itemComplete);
-                            console.log({ parentId: item.parentId, itemId: item.id, complete: !itemComplete })
                             dispatch({ type: 'SET_ITEM_COMPLETE', payload: { parentId: item.parentId, itemId: item.id, complete: !itemComplete } })
                             refresh();
                         }
                     }
                     style={styles.iconRight}
-                    name={itemComplete == true ? 'checkmark' : 'square-outline'} />
+                    name={stateItem.complete == true ? 'checkmark' : 'square-outline'} />
 
             </TouchableOpacity>
         </Swipeable>
@@ -78,7 +81,6 @@ const styles = StyleSheet.create({
         padding: 10,
         height: 60,
         justifyContent: 'center',
-        flex: 1
     },
     iconRight: {
         position: 'absolute',
