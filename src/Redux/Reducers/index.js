@@ -73,7 +73,17 @@ function listStateReducer(state = initialListState, action) {
                 ...state,
                 lists: deleteSublistState
             }
+        case types.SET_SUBLIST_IMPORTANT:
+            const setSublistImportantState = JSON.parse(JSON.stringify(state.lists))
+            setSublistImportantState[action.payload.parentId].sublist[action.payload.itemId].important = action.payload.important
+            return {
+                ...state,
+                lists: setSublistImportantState
+            }
+
+
         default: return state
+
     }
 }
 

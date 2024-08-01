@@ -92,7 +92,7 @@ function ListScreen({ navigation, route }) {
                                 title={item.title}
                                 complete={item.complete}
                                 refresh={refreshForChild}
-
+                                important={item.important}
                             />
 
                             <ListSeparator />

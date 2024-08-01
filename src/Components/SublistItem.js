@@ -8,8 +8,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 
 
-function SublistItem({ title, complete, style, onPress, IconOnPress, parentId, itemId, refresh }) {
+function SublistItem({ title, complete, important, style, onPress, IconOnPress, parentId, itemId, refresh }) {
     const [itemComplete, setItemComplete] = useState(complete)
+    const [itemImportant, setItemImportant] = useState(important)
     const sublistState = useSelector(state => state.listReducer.lists[parentId].sublist)
     const dispatch = useDispatch()
 
@@ -40,19 +41,28 @@ function SublistItem({ title, complete, style, onPress, IconOnPress, parentId, i
         >
 
             <TouchableOpacity style={styles.container} onPress={onPress}>
-                <View style={{ flex: 1 }}>
-                    <Text style={STYLES.Text}>{title}</Text>
-                </View>
                 <IconButton
                     onPress={
                         () => {
 
+                            setItemImportant(!itemImportant);
+                            dispatch({ type: 'SET_SUBLIST_IMPORTANT', payload: { parentId, itemId, important: !itemImportant } })
+                            refresh();
+                        }
+                    }
+                    style={styles.iconLeft}
+                    name={itemImportant == true ? 'star' : 'star-outline'}
+                    color={itemImportant == true ? 'yellow' : COLORS.light} />
+                <Text style={STYLES.Text}>{title}</Text>
+                <IconButton
+                    onPress={
+                        () => {
                             setItemComplete(!itemComplete);
                             dispatch({ type: 'SET_ITEM_COMPLETE', payload: { parentId, itemId, complete: !itemComplete } })
                             refresh();
                         }
                     }
-                    style={styles.iconButtons}
+                    style={styles.iconRight}
                     name={itemComplete == true ? 'checkmark' : 'square-outline'} />
 
             </TouchableOpacity>
@@ -70,9 +80,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         flex: 1
     },
-    iconButtons: {
+    iconRight: {
         position: 'absolute',
         right: 10
+    },
+    iconLeft: {
+        position: 'absolute',
+        left: 10
     }
 
 });
