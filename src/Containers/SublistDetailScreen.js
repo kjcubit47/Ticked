@@ -3,21 +3,23 @@ import { View, StyleSheet } from 'react-native';
 import Screen from './Screen';
 import Header from 'Components/Header/Header';
 import IconButton from 'Components/Buttons/IconButton';
-import { COLORS } from 'Constants';
+import { COLORS, STYLES } from 'Constants';
 import { useDispatch } from 'react-redux';
 import AppText from 'Components/AppText';
+import { TextInput } from 'react-native-gesture-handler';
+import { ScreenDimensions } from 'util';
 
 function SublistDetailScreen({ navigation, route, style }) {
     const { item } = route.params
     const [itemComplete, setItemComplete] = useState(item.complete)
     const [itemImportant, setItemImportant] = useState(item.important)
+    const [notesText, setNotesText] = useState(item.note)
     const dispatch = useDispatch()
     return (
         <Screen style={[styles.container, style]}>
             <Header
                 leftItem={<IconButton
                     name='chevron-back'
-                    size={32}
                     onPress={() => {
                         navigation.pop()
                     }}
@@ -34,7 +36,6 @@ function SublistDetailScreen({ navigation, route, style }) {
                 <IconButton
                     onPress={
                         () => {
-
                             setItemImportant(!itemImportant);
                             dispatch({ type: 'SET_SUBLIST_IMPORTANT', payload: { parentId: item.parentId, itemId: item.id, important: !itemImportant } })
                         }
@@ -62,6 +63,17 @@ function SublistDetailScreen({ navigation, route, style }) {
                     name={itemComplete == true ? 'checkmark' : 'square-outline'} />
 
             </View>
+            <View style={{ padding: 10 }}>
+                <AppText style={{ textAlign: 'left', }}>Notes</AppText>
+                <TextInput multiline
+                    defaultValue={notesText}
+                    onChangeText={(text) => { setNotesText(text) }}
+                    blurOnSubmit={true}
+                    onBlur={() => {
+                        dispatch({ type: "SET_SUBLIST_NOTE", payload: { parentId: item.parentId, itemId: item.id, note: notesText } })
+                    }}
+                    style={styles.textInput} />
+            </View>
         </Screen>
     );
 }
@@ -69,6 +81,14 @@ function SublistDetailScreen({ navigation, route, style }) {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: COLORS.flatListBackground
+    },
+    textInput: {
+        backgroundColor: COLORS.secondary,
+        color: COLORS.light,
+        fontSize: 20,
+        padding: 5,
+        height: ScreenDimensions.height * 0.2,
+        maxHeight: ScreenDimensions.height * 0.2,
     }
 });
 

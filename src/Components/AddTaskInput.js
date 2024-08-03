@@ -31,6 +31,7 @@ function AddTaskInput({ parentId, style }) {
                         setNewTask(text)
 
                     }}
+
                     onFocus={() => {
                         if (listStates.lists[parentId]) {
                             setInputFocused(true)
@@ -49,7 +50,17 @@ function AddTaskInput({ parentId, style }) {
                         if (listStates.lists[parentId]) {
 
                             setInputFocused(false)
-                            dispatch({ type: "ADD_SUBLIST_ITEM", payload: { title: newTask, id: listStates.lists[parentId].sublist.length, parentId: parentId, complete: false, important: false } })
+                            dispatch({
+                                type: "ADD_SUBLIST_ITEM",
+                                payload: {
+                                    title: newTask,
+                                    id: listStates.lists[parentId].sublist.length,
+                                    parentId: parentId,
+                                    note: '',
+                                    complete: false,
+                                    important: false
+                                }
+                            })
                             setNewTask('')
                         }
                     }}

@@ -87,7 +87,13 @@ function listStateReducer(state = initialListState, action) {
                 ...state,
                 lists: setSublistImportantState
             }
-
+        case types.SET_SUBLIST_NOTE:
+            const setSublistNoteState = JSON.parse(JSON.stringify(state.lists))
+            setSublistNoteState[action.payload.parentId].sublist[action.payload.itemId].note = action.payload.note
+            return {
+                ...state,
+                lists: setSublistNoteState
+            }
 
         default: return state
 
