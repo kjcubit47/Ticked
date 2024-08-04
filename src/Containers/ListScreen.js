@@ -24,11 +24,14 @@ function ListScreen({ navigation, route, refreshFromChild }) {
     // refresh : utility/workaround for flatlist refreshing
     const { itemId, refresh } = route.params
     const [listNameFocused, setListNameFocused] = useState(false)
-    const [listName, setListName] = listStates.lists[itemId] ? useState(listStates.lists[itemId].title) : useState('')
+    const index = listStates.lists.findIndex((curr) => {
+        return itemId == curr.id
+    })
+    console.log(index)
+    const [listName, setListName] = listStates.lists[index] ? useState(listStates.lists[index].title) : useState('')
     const [listRefresher, setListRefresher] = useState(true)
     const [modalVisible, setModalVisible] = useState(false)
     const dispatch = useDispatch();
-
 
 
     function refreshForChild() {
@@ -57,12 +60,12 @@ function ListScreen({ navigation, route, refreshFromChild }) {
                             }
                             else {
                                 dispatch({ type: "ADD_LIST", payload: { title: listName, id: itemId, sublist: [] } })
-
+                                setListName(listName)
                             }
                             setListRefresher(!listRefresher)
                         }}
                         onFocus={() => setListNameFocused(true)}
-                        autoFocus={listName == ''}
+                        autoFocus={listName === ''}
                         defaultValue={listName}
                         autoComplete='false'
                         style={[STYLES.TextInput, {
@@ -99,13 +102,13 @@ function ListScreen({ navigation, route, refreshFromChild }) {
                             <ListSeparator />
                         </>
                     }
-                    data={listStates.lists[itemId] ? listStates.lists[itemId].sublist : []}
+                    data={listStates.lists[index] ? listStates.lists[index].sublist : []}
                     extraData={listRefresher}
                 // ItemSeparatorComponent={<ListSeparator />}
 
                 />
             </View>
-            <AddTaskInput style={{ margin: 10 }} parentId={itemId} />
+            <AddTaskInput style={{ margin: 10 }} parentId={itemId} listIndex={index} />
 
             <ListSettingsModal
                 refresh={listRefresher}

@@ -7,9 +7,7 @@ import IconButton from './Buttons/IconButton';
 import { Swipeable } from 'react-native-gesture-handler';
 function FlatListItem({ title, id, onPress, style, parentStyle }) {
 
-
     const dispatch = useDispatch()
-
 
     const renderRightActions = (
         dispatch,

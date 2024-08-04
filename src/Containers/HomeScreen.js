@@ -23,7 +23,6 @@ function HomeScreen({ navigation, refreshFromChild }) {
     const lists = useSelector(state => state.listReducer.lists)
 
 
-
     return (
 
         <Screen  >

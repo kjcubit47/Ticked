@@ -47,7 +47,7 @@ function SublistDetailScreen({ navigation, route, style }) {
                     name={itemImportant == true ? 'star' : 'star-outline'}
                     color={itemImportant == true ? 'yellow' : COLORS.light} />
 
-                <AppText style={itemComplete ? { textDecorationLine: 'line-through', } : {}}>{item.title}</AppText>
+                <AppText style={itemComplete ? STYLES.ListTextComplete : STYLES.Text}>{item.title}</AppText>
 
                 <IconButton
                     onPress={

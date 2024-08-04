@@ -5,7 +5,8 @@ import IconButton from './Buttons/IconButton';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { ScreenDimensions } from 'util';
-function AddTaskInput({ parentId, style }) {
+
+function AddTaskInput({ parentId, listIndex, style }) {
     let listStates = useSelector((state) => state.listReducer)
     const stateIdCount = useSelector((state) => state.listReducer.idCount)
     const dispatch = useDispatch()
@@ -23,7 +24,7 @@ function AddTaskInput({ parentId, style }) {
         >
             <View style={{ backgroundColor: COLORS.secondary, alignItems: 'center', flexDirection: 'row', marginTop: 5, marginBottom: 15, borderRadius: 10 }}>
                 <TextInput
-                    editable={listStates.lists[parentId] != undefined}
+                    editable={listStates.lists[listIndex] != undefined}
                     placeholder='Add an item'
                     placeholderTextColor={'white'}
                     style={[STYLES.TextInput, styles.textBox]}
@@ -33,13 +34,13 @@ function AddTaskInput({ parentId, style }) {
                     }}
 
                     onFocus={() => {
-                        if (listStates.lists[parentId]) {
+                        if (listStates.lists[listIndex]) {
                             setInputFocused(true)
                         }
 
                     }}
                     onBlur={() => {
-                        if (listStates.lists[parentId]) {
+                        if (listStates.lists[listIndex]) {
 
                             setInputFocused(false)
                             setNewTask('')
@@ -47,7 +48,7 @@ function AddTaskInput({ parentId, style }) {
 
                     }}
                     onSubmitEditing={() => {
-                        if (listStates.lists[parentId]) {
+                        if (listStates.lists[listIndex]) {
 
                             setInputFocused(false)
                             dispatch({

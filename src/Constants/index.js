@@ -27,7 +27,13 @@ export const STYLES = {
     "Text": {
         fontSize: 24,
         textAlign: 'center',
-        color: 'white'
+        color: COLORS.light
+    },
+    "ListTextComplete": {
+        fontSize: 24,
+        textAlign: 'center',
+        color: COLORS.light,
+        textDecorationLine: 'line-through'
     },
     "Button": {
         backgroundColor: COLORS.primary,
