@@ -15,7 +15,9 @@ import { isAndroid } from 'util';
 import { genericSublists } from 'util';
 
 
-function ListScreen({ navigation, route }) {
+function ListScreen({ navigation, route, refreshFromChild }) {
+
+
     let listStates = useSelector((state) => state.listReducer)
 
     // Route Parameters : 
@@ -27,6 +29,8 @@ function ListScreen({ navigation, route }) {
     const [listRefresher, setListRefresher] = useState(true)
     const [modalVisible, setModalVisible] = useState(false)
     const dispatch = useDispatch();
+
+
 
     function refreshForChild() {
         setListRefresher(!listRefresher)
@@ -88,12 +92,8 @@ function ListScreen({ navigation, route }) {
                     renderItem={({ item }) =>
                         <>
                             <SublistItem
-                                parentId={itemId}
-                                itemId={item.id}
-                                title={item.title}
-                                complete={item.complete}
+                                item={item}
                                 refresh={refreshForChild}
-                                important={item.important}
                                 onPress={() => { navigation.navigate("SublistDetailScreen", { item: item }) }}
                             />
 

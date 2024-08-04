@@ -1,13 +1,13 @@
 import { COLORS, STYLES } from 'Constants';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
 import IconButton from './Buttons/IconButton';
-import { isAndroid } from '../util';
-import store from 'Redux/Store';
+
 import { useDispatch, useSelector } from 'react-redux';
+import { ScreenDimensions } from 'util';
 function AddTaskInput({ parentId, style }) {
     let listStates = useSelector((state) => state.listReducer)
-
+    const stateIdCount = useSelector((state) => state.listReducer.idCount)
     const dispatch = useDispatch()
     const [newTask, setNewTask] = useState('')
     const [inputFocused, setInputFocused] = useState(false)
@@ -31,6 +31,7 @@ function AddTaskInput({ parentId, style }) {
                         setNewTask(text)
 
                     }}
+
                     onFocus={() => {
                         if (listStates.lists[parentId]) {
                             setInputFocused(true)
@@ -49,7 +50,19 @@ function AddTaskInput({ parentId, style }) {
                         if (listStates.lists[parentId]) {
 
                             setInputFocused(false)
-                            dispatch({ type: "ADD_SUBLIST_ITEM", payload: { title: newTask, id: listStates.lists[parentId].sublist.length, parentId: parentId, complete: false, important: false } })
+                            dispatch({
+                                type: "ADD_SUBLIST_ITEM",
+                                payload: {
+                                    title: newTask,
+                                    id: stateIdCount,
+                                    // id: listStates.lists[parentId].sublist.length,
+                                    parentId: parentId,
+                                    note: '',
+                                    complete: false,
+                                    important: false,
+                                    createdAt: new Date().getTime()
+                                }
+                            })
                             setNewTask('')
                         }
                     }}
@@ -65,10 +78,10 @@ function AddTaskInput({ parentId, style }) {
             </View>
 
             {inputFocused &&
-                <View style={{ flexDirection: 'row', backgroundColor: COLORS.danger, width: '90%' }}>
-                    <IconButton size={32} name={'add'} color={COLORS.white} />
-                    <IconButton size={32} name={'add'} color={COLORS.white} />
-                    <IconButton size={32} name={'add'} color={COLORS.white} />
+                <View style={{ flexDirection: 'row', width: '90%', alignSelf: 'flex-start', height: ScreenDimensions.height * 0.06, alignItems: 'flex-start' }}>
+                    <IconButton size={32} name={'calendar'} color={COLORS.white} />
+                    {/* <IconButton size={32} name={'add'} color={COLORS.white} />
+                    <IconButton size={32} name={'add'} color={COLORS.white} /> */}
 
                 </View>
             }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, Animated } from 'react-native';
+import { StyleSheet, TouchableOpacity, Text, Animated } from 'react-native';
 import IconButton from './Buttons/IconButton';
 import { COLORS, STYLES } from 'Constants';
 import { Swipeable } from 'react-native-gesture-handler';
@@ -8,15 +8,25 @@ import { useDispatch, useSelector } from 'react-redux';
 
 
 
-function SublistItem({ title, complete, important, style, onPress, IconOnPress, parentId, itemId, refresh }) {
-    const [itemComplete, setItemComplete] = useState(complete)
-    const [itemImportant, setItemImportant] = useState(important)
-    // const sublistState = useSelector(state => state.listReducer.lists[parentId].sublist)
+function SublistItem({ style, onPress, refresh, item }) {
+    const state = useSelector(state => state.listReducer)
+    let index1 = state.lists.findIndex((current) => {
+        return item.parentId == current.id
+    })
+    let index2 = state.lists[index1].sublist.findIndex((current) => {
+        return item.id == current.id
+    })
+    // const stateItem = useSelector(state => state.listReducer.lists[item.parentId].sublist[item.id])
+    const stateItem = useSelector(state => state.listReducer.lists[index1].sublist[index2])
+
+    const [itemComplete, setItemComplete] = useState(stateItem.complete)
+    const [itemImportant, setItemImportant] = useState(stateItem.important)
+
     const dispatch = useDispatch()
 
     const renderRightActions = (
         dispatch,
-        itemId,
+        item
     ) => {
 
         return (
@@ -25,7 +35,7 @@ function SublistItem({ title, complete, important, style, onPress, IconOnPress, 
                     name='trash'
                     onPress={() => {
                         refresh()
-                        dispatch({ type: "DELETE_SUBLIST_ITEM", payload: { parentId: parentId, itemId: itemId } })
+                        dispatch({ type: "DELETE_SUBLIST_ITEM", payload: { parentId: item.parentId, itemId: item.id } })
                     }} />
 
             </Animated.View>
@@ -35,7 +45,7 @@ function SublistItem({ title, complete, important, style, onPress, IconOnPress, 
 
     return (
         <Swipeable
-            renderRightActions={() => renderRightActions(dispatch, parentId, itemId,)}
+            renderRightActions={() => renderRightActions(dispatch, item)}
             friction={2}
             overshootRight={false}
         >
@@ -46,24 +56,24 @@ function SublistItem({ title, complete, important, style, onPress, IconOnPress, 
                         () => {
 
                             setItemImportant(!itemImportant);
-                            dispatch({ type: 'SET_SUBLIST_IMPORTANT', payload: { parentId, itemId, important: !itemImportant } })
+                            dispatch({ type: 'SET_SUBLIST_IMPORTANT', payload: { parentId: item.parentId, itemId: item.id, important: !itemImportant } })
                             refresh();
                         }
                     }
                     style={styles.iconLeft}
-                    name={itemImportant == true ? 'star' : 'star-outline'}
-                    color={itemImportant == true ? 'yellow' : COLORS.light} />
-                <Text style={STYLES.Text}>{title}</Text>
+                    name={stateItem.important == true ? 'star' : 'star-outline'}
+                    color={stateItem.important == true ? 'yellow' : COLORS.light} />
+                <Text style={STYLES.Text}>{item.title}</Text>
                 <IconButton
                     onPress={
                         () => {
                             setItemComplete(!itemComplete);
-                            dispatch({ type: 'SET_ITEM_COMPLETE', payload: { parentId, itemId, complete: !itemComplete } })
+                            dispatch({ type: 'SET_ITEM_COMPLETE', payload: { parentId: item.parentId, itemId: item.id, complete: !itemComplete } })
                             refresh();
                         }
                     }
                     style={styles.iconRight}
-                    name={itemComplete == true ? 'checkmark' : 'square-outline'} />
+                    name={stateItem.complete == true ? 'checkmark' : 'square-outline'} />
 
             </TouchableOpacity>
         </Swipeable>
@@ -78,7 +88,6 @@ const styles = StyleSheet.create({
         padding: 10,
         height: 60,
         justifyContent: 'center',
-        flex: 1
     },
     iconRight: {
         position: 'absolute',

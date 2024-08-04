@@ -10,6 +10,7 @@ import { COLORS } from 'Constants';
 import store from 'Redux/Store';
 import ListSeparator from 'Components/ListSeparator';
 import { genericLists } from 'util';
+import { useSelector } from 'react-redux';
 
 
 function HomeScreen({ navigation, refreshFromChild }) {
@@ -18,9 +19,8 @@ function HomeScreen({ navigation, refreshFromChild }) {
     if (refreshFromChild != null) {
         setRefresh(refreshFromChild)
     }
-    let lists = store.getState().listReducer.lists
-
-
+    const id = useSelector(state => state.listReducer.idCount)
+    const lists = useSelector(state => state.listReducer.lists)
     return (
 
         <Screen  >
@@ -34,7 +34,7 @@ function HomeScreen({ navigation, refreshFromChild }) {
                         size={32}
                         color="white"
                         onPress={() => {
-                            navigation.navigate("ListScreen", { itemId: lists.length, refresh }); setRefresh(!refresh)
+                            navigation.navigate("ListScreen", { itemId: id, refresh }); setRefresh(!refresh)
                         }}
                     />
                 }
