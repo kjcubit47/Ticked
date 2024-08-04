@@ -4,6 +4,7 @@ import { View, StyleSheet, TextInput, KeyboardAvoidingView, Platform } from 'rea
 import IconButton from './Buttons/IconButton';
 
 import { useDispatch, useSelector } from 'react-redux';
+import { ScreenDimensions } from 'util';
 function AddTaskInput({ parentId, style }) {
     let listStates = useSelector((state) => state.listReducer)
     const stateIdCount = useSelector((state) => state.listReducer.idCount)
@@ -77,10 +78,10 @@ function AddTaskInput({ parentId, style }) {
             </View>
 
             {inputFocused &&
-                <View style={{ flexDirection: 'row', backgroundColor: COLORS.danger, width: '90%' }}>
-                    <IconButton size={32} name={'add'} color={COLORS.white} />
-                    <IconButton size={32} name={'add'} color={COLORS.white} />
-                    <IconButton size={32} name={'add'} color={COLORS.white} />
+                <View style={{ flexDirection: 'row', width: '90%', alignSelf: 'flex-start', height: ScreenDimensions.height * 0.06, alignItems: 'flex-start' }}>
+                    <IconButton size={32} name={'calendar'} color={COLORS.white} />
+                    {/* <IconButton size={32} name={'add'} color={COLORS.white} />
+                    <IconButton size={32} name={'add'} color={COLORS.white} /> */}
 
                 </View>
             }

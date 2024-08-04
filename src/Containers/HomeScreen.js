@@ -19,8 +19,8 @@ function HomeScreen({ navigation, refreshFromChild }) {
     if (refreshFromChild != null) {
         setRefresh(refreshFromChild)
     }
-    let lists = store.getState().listReducer.lists
     const id = useSelector(state => state.listReducer.idCount)
+    const lists = useSelector(state => state.listReducer.lists)
     return (
 
         <Screen  >

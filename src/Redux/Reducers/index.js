@@ -95,7 +95,6 @@ function listStateReducer(state = initialListState, action) {
             let ssiIndex = setSublistImportantState.findIndex((item) => {
                 return item.id == action.payload.parentId
             })
-            console.log(ssiIndex)
             let ssiIndex2 = setSublistImportantState[ssiIndex].sublist.findIndex((item) => {
                 return item.id == action.payload.itemId
             })
