@@ -16,6 +16,7 @@ import { genericSublists } from 'util';
 
 
 function ListScreen({ navigation, route, refreshFromChild }) {
+
     let listStates = useSelector((state) => state.listReducer)
 
     // Route Parameters : 

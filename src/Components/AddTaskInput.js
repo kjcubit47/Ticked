@@ -58,7 +58,8 @@ function AddTaskInput({ parentId, style }) {
                                     parentId: parentId,
                                     note: '',
                                     complete: false,
-                                    important: false
+                                    important: false,
+                                    createdAt: new Date().getTime()
                                 }
                             })
                             setNewTask('')

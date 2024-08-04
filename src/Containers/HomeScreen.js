@@ -20,7 +20,6 @@ function HomeScreen({ navigation, refreshFromChild }) {
     }
     let lists = store.getState().listReducer.lists
 
-
     return (
 
         <Screen  >
