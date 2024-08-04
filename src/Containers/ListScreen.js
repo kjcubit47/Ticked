@@ -12,7 +12,6 @@ import ListSeparator from 'Components/ListSeparator';
 import ListSettingsModal from 'Components/Modals/ListSettingsModal';
 import SublistItem from 'Components/SublistItem';
 import { isAndroid } from 'util';
-import { genericSublists } from 'util';
 
 
 function ListScreen({ navigation, route, refreshFromChild }) {

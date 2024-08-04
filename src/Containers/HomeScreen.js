@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, FlatList, Modal, TextInput, StyleSheet } from 'react-native';
+import { View, FlatList, Modal, TextInput, StyleSheet, Animated } from 'react-native';
 import Screen from './Screen';
 import FlatListItem from 'Components/FlatListItem';
 import Header from 'Components/Header/Header';
@@ -10,7 +10,7 @@ import { COLORS } from 'Constants';
 import store from 'Redux/Store';
 import ListSeparator from 'Components/ListSeparator';
 import { genericLists } from 'util';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 function HomeScreen({ navigation, refreshFromChild }) {
@@ -21,6 +21,9 @@ function HomeScreen({ navigation, refreshFromChild }) {
     }
     const id = useSelector(state => state.listReducer.idCount)
     const lists = useSelector(state => state.listReducer.lists)
+
+
+
     return (
 
         <Screen  >
@@ -48,7 +51,7 @@ function HomeScreen({ navigation, refreshFromChild }) {
 
                     keyExtractor={(item) => item.id}
                     renderItem={({ item }) =>
-                        <FlatListItem title={item.title}
+                        <FlatListItem title={item.title} id={item.id}
                             onPress={() => {
                                 navigation.navigate("ListScreen", { itemId: item.id, refresh }); setRefresh(!refresh)
                             }}
