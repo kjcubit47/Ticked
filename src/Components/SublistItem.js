@@ -9,9 +9,16 @@ import { useDispatch, useSelector } from 'react-redux';
 
 
 function SublistItem({ style, onPress, refresh, item }) {
-    const stateItem = useSelector(state => state.listReducer.lists[item.parentId].sublist[item.id])
-    // const [itemComplete, setItemComplete] = useState(item.complete)
-    // const [itemImportant, setItemImportant] = useState(item.important)
+    const state = useSelector(state => state.listReducer)
+    let index1 = state.lists.findIndex((current) => {
+        return item.parentId == current.id
+    })
+    let index2 = state.lists[index1].sublist.findIndex((current) => {
+        return item.id == current.id
+    })
+    // const stateItem = useSelector(state => state.listReducer.lists[item.parentId].sublist[item.id])
+    const stateItem = useSelector(state => state.listReducer.lists[index1].sublist[index2])
+
     const [itemComplete, setItemComplete] = useState(stateItem.complete)
     const [itemImportant, setItemImportant] = useState(stateItem.important)
 

@@ -1,4 +1,6 @@
 module.exports = {
+    RESET_STATE: "RESET_STATE",
+
     ADD_LIST: "ADD_LIST",
     DELETE_LIST: "DELETE_LIST",
     SET_LIST_TITLE: "SET_LIST_TITLE",

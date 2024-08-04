@@ -1,13 +1,12 @@
 import { COLORS, STYLES } from 'Constants';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
 import IconButton from './Buttons/IconButton';
-import { isAndroid } from '../util';
-import store from 'Redux/Store';
+
 import { useDispatch, useSelector } from 'react-redux';
 function AddTaskInput({ parentId, style }) {
     let listStates = useSelector((state) => state.listReducer)
-
+    const stateIdCount = useSelector((state) => state.listReducer.idCount)
     const dispatch = useDispatch()
     const [newTask, setNewTask] = useState('')
     const [inputFocused, setInputFocused] = useState(false)
@@ -54,7 +53,8 @@ function AddTaskInput({ parentId, style }) {
                                 type: "ADD_SUBLIST_ITEM",
                                 payload: {
                                     title: newTask,
-                                    id: listStates.lists[parentId].sublist.length,
+                                    id: stateIdCount,
+                                    // id: listStates.lists[parentId].sublist.length,
                                     parentId: parentId,
                                     note: '',
                                     complete: false,

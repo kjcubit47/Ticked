@@ -9,5 +9,5 @@ export let ScreenDimensions = {
 }
 
 export const sortSublistByDate = (arr) => {
-    arr.sort((a, b) => a.getTime() - b.getTime());
+    arr.sort((a, b) => a - b);
 }

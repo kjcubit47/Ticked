@@ -3,12 +3,13 @@ import types from "Redux/Actions/ActionTypes"
 
 const initialListState = {
     lists: [],
-    listCount: 0,
+    idCount: 0,
 }
 
 function listStateReducer(state = initialListState, action) {
     switch (action.type) {
-
+        case types.RESET_STATE:
+            return initialListState;
         case types.SET_LIST_COUNT:
             return {
                 ...state,
@@ -18,7 +19,7 @@ function listStateReducer(state = initialListState, action) {
             return {
                 ...state,
                 lists: state.lists.concat(action.payload),
-                listCount: state.listCount + 1
+                idCount: state.idCount + 1
             }
         case types.DELETE_LIST:
             let deleteListState = JSON.parse(JSON.stringify(state.lists))
@@ -29,7 +30,7 @@ function listStateReducer(state = initialListState, action) {
             return {
                 ...state,
                 lists: deleteListState,
-                listCount: state.listCount - 1
+
             }
         case types.UPDATE_LIST_NAME:
             let updateIndex = -1;
@@ -53,43 +54,71 @@ function listStateReducer(state = initialListState, action) {
             }
         case types.ADD_SUBLIST_ITEM:
             const newSublistState = JSON.parse(JSON.stringify(state.lists))
-            newSublistState[action.payload.parentId].sublist.push(action.payload)
+            let nssIndex = newSublistState.findIndex((item) => {
+                return item.id == action.payload.parentId
+            })
+            newSublistState[nssIndex].sublist.push(action.payload)
             return {
                 ...state,
                 lists: newSublistState,
+                idCount: state.idCount + 1
+
 
             }
         case types.SET_ITEM_COMPLETE:
             const SetItemCompleteState = JSON.parse(JSON.stringify(state.lists))
-            SetItemCompleteState[action.payload.parentId].sublist[action.payload.itemId].complete = action.payload.complete
+            let sicIndex = SetItemCompleteState.findIndex((item) => {
+                return item.id == action.payload.parentId
+            })
+
+            let sicIndex2 = SetItemCompleteState[sicIndex].sublist.findIndex((item) => {
+                return item.id == action.payload.itemId
+            })
+            SetItemCompleteState[sicIndex].sublist[sicIndex2].complete = action.payload.complete
             return {
                 ...state,
                 lists: SetItemCompleteState
             }
         case types.DELETE_SUBLIST_ITEM:
+
             const deleteSublistState = JSON.parse(JSON.stringify(state.lists))
-            deleteSublistState[action.payload.parentId].sublist = deleteSublistState[action.payload.parentId].sublist.filter(item => { return item.id !== action.payload.itemId })
+            let dssIndex = deleteSublistState.findIndex((item) => {
+                return item.id == action.payload.parentId
+            })
+            deleteSublistState[dssIndex].sublist = deleteSublistState[dssIndex].sublist.filter(item => { return item.id !== action.payload.itemId })
             return {
                 ...state,
                 lists: deleteSublistState
             }
         case types.SET_SUBLIST_IMPORTANT:
             const setSublistImportantState = JSON.parse(JSON.stringify(state.lists))
-            setSublistImportantState[action.payload.parentId].sublist[action.payload.itemId].important = action.payload.important
+            let ssiIndex = setSublistImportantState.findIndex((item) => {
+                return item.id == action.payload.parentId
+            })
+            console.log(ssiIndex)
+            let ssiIndex2 = setSublistImportantState[ssiIndex].sublist.findIndex((item) => {
+                return item.id == action.payload.itemId
+            })
+            if (ssiIndex >= 0 && ssiIndex2 >= 0) {
 
-            // SORT BY IMPORTANT -- SHOULD BE FIRST
-
-            // setSublistImportantState[action.payload.parentId].sublist.sort((x, y) => {
-            //     return (x.important === y.important) ? 0 : x.important ? -1 : 1;
-
-            // })
+                setSublistImportantState[ssiIndex].sublist[ssiIndex2].important = action.payload.important
+            }
             return {
                 ...state,
                 lists: setSublistImportantState
             }
         case types.SET_SUBLIST_NOTE:
             const setSublistNoteState = JSON.parse(JSON.stringify(state.lists))
-            setSublistNoteState[action.payload.parentId].sublist[action.payload.itemId].note = action.payload.note
+
+            let ssnIndex = setSublistNoteState.findIndex((item) => {
+                return item.id == action.payload.parentId
+            })
+
+            let ssnIndex2 = setSublistNoteState[ssnIndex].sublist.findIndex((item) => {
+                return item.id == action.payload.itemId
+            })
+
+            setSublistNoteState[ssnIndex].sublist[ssnIndex2].note = action.payload.note
             return {
                 ...state,
                 lists: setSublistNoteState

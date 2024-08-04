@@ -17,6 +17,7 @@ import { genericSublists } from 'util';
 
 function ListScreen({ navigation, route, refreshFromChild }) {
 
+
     let listStates = useSelector((state) => state.listReducer)
 
     // Route Parameters : 
@@ -28,6 +29,8 @@ function ListScreen({ navigation, route, refreshFromChild }) {
     const [listRefresher, setListRefresher] = useState(true)
     const [modalVisible, setModalVisible] = useState(false)
     const dispatch = useDispatch();
+
+
 
     function refreshForChild() {
         setListRefresher(!listRefresher)
