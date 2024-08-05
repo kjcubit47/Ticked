@@ -63,7 +63,7 @@ function SublistItem({ style, onPress, refresh, item }) {
                     style={styles.iconLeft}
                     name={stateItem.important == true ? 'star' : 'star-outline'}
                     color={stateItem.important == true ? 'yellow' : COLORS.light} />
-                <Text style={STYLES.Text}>{item.title}</Text>
+                <Text style={itemComplete ? STYLES.ListTextComplete : STYLES.Text}>{item.title}</Text>
                 <IconButton
                     onPress={
                         () => {

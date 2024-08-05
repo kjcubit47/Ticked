@@ -12,7 +12,6 @@ import ListSeparator from 'Components/ListSeparator';
 import ListSettingsModal from 'Components/Modals/ListSettingsModal';
 import SublistItem from 'Components/SublistItem';
 import { isAndroid } from 'util';
-import { genericSublists } from 'util';
 
 
 function ListScreen({ navigation, route, refreshFromChild }) {
@@ -25,11 +24,13 @@ function ListScreen({ navigation, route, refreshFromChild }) {
     // refresh : utility/workaround for flatlist refreshing
     const { itemId, refresh } = route.params
     const [listNameFocused, setListNameFocused] = useState(false)
-    const [listName, setListName] = listStates.lists[itemId] ? useState(listStates.lists[itemId].title) : useState('')
+    const index = listStates.lists.findIndex((curr) => {
+        return itemId == curr.id
+    })
+    const [listName, setListName] = listStates.lists[index] ? useState(listStates.lists[index].title) : useState('')
     const [listRefresher, setListRefresher] = useState(true)
     const [modalVisible, setModalVisible] = useState(false)
     const dispatch = useDispatch();
-
 
 
     function refreshForChild() {
@@ -58,12 +59,12 @@ function ListScreen({ navigation, route, refreshFromChild }) {
                             }
                             else {
                                 dispatch({ type: "ADD_LIST", payload: { title: listName, id: itemId, sublist: [] } })
-
+                                setListName(listName)
                             }
                             setListRefresher(!listRefresher)
                         }}
                         onFocus={() => setListNameFocused(true)}
-                        autoFocus={listName == ''}
+                        autoFocus={listName === ''}
                         defaultValue={listName}
                         autoComplete='false'
                         style={[STYLES.TextInput, {
@@ -87,6 +88,7 @@ function ListScreen({ navigation, route, refreshFromChild }) {
             <View style={{ flex: 1, width: '100%', height: '100%' }}>
                 {/* flatlist here */}
                 <FlatList
+
                     style={{ backgroundColor: COLORS.flatListBackground }}
                     keyExtractor={(item) => item.id}
                     renderItem={({ item }) =>
@@ -100,13 +102,13 @@ function ListScreen({ navigation, route, refreshFromChild }) {
                             <ListSeparator />
                         </>
                     }
-                    data={listStates.lists[itemId] ? listStates.lists[itemId].sublist : []}
+                    data={listStates.lists[index] ? listStates.lists[index].sublist : []}
                     extraData={listRefresher}
                 // ItemSeparatorComponent={<ListSeparator />}
 
                 />
             </View>
-            <AddTaskInput style={{ margin: 10 }} parentId={itemId} />
+            <AddTaskInput style={{ margin: 10 }} parentId={itemId} listIndex={index} />
 
             <ListSettingsModal
                 refresh={listRefresher}
