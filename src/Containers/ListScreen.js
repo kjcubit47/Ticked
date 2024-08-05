@@ -27,7 +27,6 @@ function ListScreen({ navigation, route, refreshFromChild }) {
     const index = listStates.lists.findIndex((curr) => {
         return itemId == curr.id
     })
-    console.log(index)
     const [listName, setListName] = listStates.lists[index] ? useState(listStates.lists[index].title) : useState('')
     const [listRefresher, setListRefresher] = useState(true)
     const [modalVisible, setModalVisible] = useState(false)
@@ -89,6 +88,7 @@ function ListScreen({ navigation, route, refreshFromChild }) {
             <View style={{ flex: 1, width: '100%', height: '100%' }}>
                 {/* flatlist here */}
                 <FlatList
+
                     style={{ backgroundColor: COLORS.flatListBackground }}
                     keyExtractor={(item) => item.id}
                     renderItem={({ item }) =>

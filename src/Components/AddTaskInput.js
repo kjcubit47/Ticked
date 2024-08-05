@@ -56,7 +56,6 @@ function AddTaskInput({ parentId, listIndex, style }) {
                                 payload: {
                                     title: newTask,
                                     id: stateIdCount,
-                                    // id: listStates.lists[parentId].sublist.length,
                                     parentId: parentId,
                                     note: '',
                                     complete: false,
