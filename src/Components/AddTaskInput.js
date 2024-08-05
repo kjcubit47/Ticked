@@ -5,6 +5,7 @@ import IconButton from './Buttons/IconButton';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { ScreenDimensions } from 'util';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 
 function AddTaskInput({ parentId, listIndex, style }) {
     let listStates = useSelector((state) => state.listReducer)
@@ -12,6 +13,12 @@ function AddTaskInput({ parentId, listIndex, style }) {
     const dispatch = useDispatch()
     const [newTask, setNewTask] = useState('')
     const [inputFocused, setInputFocused] = useState(false)
+
+    const [datePickerVisible, setDatePickerVisible] = useState(false)
+    const [date, setDate] = useState(new Date())
+    const [timePickerVisible, setTimePickerVisible] = useState(false)
+    const [time, setTime] = useState(new Date())
+
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -79,13 +86,44 @@ function AddTaskInput({ parentId, listIndex, style }) {
 
             {inputFocused &&
                 <View style={{ flexDirection: 'row', width: '90%', alignSelf: 'flex-start', height: ScreenDimensions.height * 0.06, alignItems: 'flex-start' }}>
-                    <IconButton size={32} name={'calendar'} color={COLORS.white} />
-                    {/* <IconButton size={32} name={'add'} color={COLORS.white} />
-                    <IconButton size={32} name={'add'} color={COLORS.white} /> */}
+                    <IconButton size={32} name={'calendar'} color={COLORS.white}
+                        onPress={() => {
+                            setDatePickerVisible(true)
+                        }}
+                    />
+                    <IconButton size={32} name={'alarm'} color={COLORS.white}
+                        onPress={() => {
+                            setTimePickerVisible(true)
+                        }}
+                    />
+
 
                 </View>
             }
-
+            <DateTimePicker
+                isVisible={datePickerVisible}
+                date={date}
+                onConfirm={(newDate) => {
+                    setDate(newDate)
+                    setDatePickerVisible(false)
+                }}
+                onCancel={() => {
+                    setDatePickerVisible(false)
+                }}
+                mode='date'
+            />
+            <DateTimePicker
+                isVisible={timePickerVisible}
+                date={time}
+                onConfirm={(newTime) => {
+                    setTime(newTime)
+                    setTimePickerVisible(false)
+                }}
+                onCancel={() => {
+                    setTimePickerVisible(false)
+                }}
+                mode='time'
+            />
         </KeyboardAvoidingView >
     );
 }
