@@ -6,14 +6,16 @@ import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 
 export async function schedulePushNotification(title, body, data, trigger) {
-    await Notifications.scheduleNotificationAsync({
+    const notificationId = await Notifications.scheduleNotificationAsync({
         content: {
             title: title,
             body: body,
             data: data, // Not presented to user
         },
-        trigger: trigger,
+        trigger: { date: trigger, },
     });
+    return notificationId
+
 }
 
 export async function registerForPushNotificationsAsync() {
@@ -106,18 +108,21 @@ Notifications.setNotificationHandler({
 // });
 
 export async function scheduleDateAlert(title, body, data, trigger) {
-    await Notifications.scheduleNotificationAsync({
+    const notificationId = await Notifications.scheduleNotificationAsync({
         content: {
             title: title,
             body: body,
             data: data, // Not presented to user
         },
-        trigger: trigger,
+        trigger: { trigger },
     });
+    return notificationId
+
 }
 
 export async function scheduleTimeAlert(title, body, data, trigger) {
-    await Notifications.scheduleNotificationAsync({
+    console.log(title, body, data, trigger)
+    const notificationId = await Notifications.scheduleNotificationAsync({
         content: {
             title: title,
             body: body,
@@ -125,4 +130,5 @@ export async function scheduleTimeAlert(title, body, data, trigger) {
         },
         trigger: trigger,
     });
+    return notificationId
 }

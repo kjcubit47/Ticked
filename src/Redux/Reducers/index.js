@@ -1,4 +1,5 @@
 import { combineReducers } from "@reduxjs/toolkit";
+import { cancelScheduledNotificationAsync } from "expo-notifications";
 import types from "Redux/Actions/ActionTypes"
 
 const initialListState = {
@@ -23,6 +24,21 @@ function listStateReducer(state = initialListState, action) {
             }
         case types.DELETE_LIST:
             let deleteListState = JSON.parse(JSON.stringify(state.lists))
+            const dlIndex = deleteListState.findIndex((item) => {
+                item.id === action.payload
+            })
+            async function deleteNotifications() {
+
+                for (const sublist in deleteListState[dlIndex]) {
+                    if (sublist.dueDate != null) {
+                        await cancelScheduledNotificationAsync(sublist.dueDate)
+                    }
+                    if (sublist.dueTime != null) {
+                        await cancelScheduledNotificationAsync(sublist.dueTime)
+                    }
+                }
+            }
+            deleteNotifications()
             deleteListState = deleteListState.filter((object) => {
 
                 return object.id != action.payload
@@ -58,6 +74,7 @@ function listStateReducer(state = initialListState, action) {
                 return item.id == action.payload.parentId
             })
             newSublistState[nssIndex].sublist.push(action.payload)
+
             return {
                 ...state,
                 lists: newSublistState,
@@ -122,7 +139,36 @@ function listStateReducer(state = initialListState, action) {
                 ...state,
                 lists: setSublistNoteState
             }
+        case types.SET_SUBLIST_DUE_DATE:
+            const setSublistDueDateState = JSON.parse(JSON.stringify(state.lists))
+            let ssddIndex = setSublistDueDateState.findIndex((item) => {
+                return item.id == action.payload.parentId
+            })
 
+            let ssddIndex2 = setSublistNoteState[ssddIndex].sublist.findIndex((item) => {
+                return item.id == action.payload.itemId
+            })
+
+            setSublistDueDateState[ssddIndex].sublist[ssddIndex2].dueDate = action.payload.dueDate
+            return {
+                ...state,
+                lists: setSublistDueDateState
+            }
+        case types.SET_SUBLIST_DUE_TIME:
+            const setSublistDueTimeState = JSON.parse(JSON.stringify(state.lists))
+            let ssdtIndex = setSublistDueTimeState.findIndex((item) => {
+                return item.id == action.payload.parentId
+            })
+
+            let ssdtIndex2 = setSublistDueTimeState[ssdtIndex].sublist.findIndex((item) => {
+                return item.id == action.payload.itemId
+            })
+
+            setSublistDueDateState[ssdtIndex].sublist[ssdtIndex2].dueTime = action.payload.dueTime
+            return {
+                ...state,
+                lists: setSublistDueTimeState
+            }
         default: return state
 
     }
