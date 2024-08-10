@@ -58,6 +58,7 @@ function listStateReducer(state = initialListState, action) {
                 lists: deleteListState,
 
             }
+
         case types.UPDATE_LIST_NAME:
             let updateIndex = -1;
             state.lists.filter((object, index) => {
@@ -78,6 +79,7 @@ function listStateReducer(state = initialListState, action) {
             } else {
                 return state
             }
+
         case types.ADD_SUBLIST_ITEM:
             const newSublistState = JSON.parse(JSON.stringify(state.lists))
             let nssIndex = newSublistState.findIndex((item) => {
@@ -89,8 +91,6 @@ function listStateReducer(state = initialListState, action) {
                 ...state,
                 lists: newSublistState,
                 idCount: state.idCount + 1
-
-
             }
 
         case types.SET_SUBLIST_TITLE:
@@ -139,6 +139,7 @@ function listStateReducer(state = initialListState, action) {
                 ...state,
                 lists: SetItemCompleteState
             }
+
         case types.DELETE_SUBLIST_ITEM:
 
             const deleteSublistState = JSON.parse(JSON.stringify(state.lists))
@@ -157,6 +158,7 @@ function listStateReducer(state = initialListState, action) {
                 ...state,
                 lists: deleteSublistState
             }
+
         case types.SET_SUBLIST_IMPORTANT:
             const setSublistImportantState = JSON.parse(JSON.stringify(state.lists))
             let ssiIndex = setSublistImportantState.findIndex((item) => {
@@ -166,13 +168,13 @@ function listStateReducer(state = initialListState, action) {
                 return item.id == action.payload.itemId
             })
             if (ssiIndex >= 0 && ssiIndex2 >= 0) {
-
                 setSublistImportantState[ssiIndex].sublist[ssiIndex2].important = action.payload.important
             }
             return {
                 ...state,
                 lists: setSublistImportantState
             }
+
         case types.SET_SUBLIST_NOTE:
             const setSublistNoteState = JSON.parse(JSON.stringify(state.lists))
 
@@ -245,18 +247,6 @@ function listStateReducer(state = initialListState, action) {
     }
 }
 
-const initialFlatListRefreshState = {
 
-}
 
-function flatListRefreshStateReducer(state = initialFlatListRefreshState, action) {
-    switch (action.type) {
-        case types.REFRESH_LISTS:
-            return {
-                refresh: action.payload
-            }
-        default: return state
-    }
-}
-
-export const rootReducer = combineReducers({ listReducer: listStateReducer, refreshReducer: flatListRefreshStateReducer })
+export const rootReducer = combineReducers({ listReducer: listStateReducer })
