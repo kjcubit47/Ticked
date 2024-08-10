@@ -5,18 +5,6 @@ import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 
-export async function schedulePushNotification(title, body, data, trigger) {
-    const notificationId = await Notifications.scheduleNotificationAsync({
-        content: {
-            title: title,
-            body: body,
-            data: data, // Not presented to user
-        },
-        trigger: { date: trigger, },
-    });
-    return notificationId
-
-}
 
 export async function registerForPushNotificationsAsync() {
     let token;
@@ -107,7 +95,7 @@ Notifications.setNotificationHandler({
 //     trigger: null,
 // });
 
-export async function scheduleDateAlert(title, body, data, trigger) {
+export async function schedulePushNotification(title, body, data, trigger) {
     console.log(title, body, data, trigger)
 
     const notificationId = await Notifications.scheduleNotificationAsync({
@@ -122,15 +110,7 @@ export async function scheduleDateAlert(title, body, data, trigger) {
 
 }
 
-export async function scheduleTimeAlert(title, body, data, trigger) {
-    console.log(title, body, data, trigger)
-    const notificationId = await Notifications.scheduleNotificationAsync({
-        content: {
-            title: title,
-            body: body,
-            data: data, // Not presented to user
-        },
-        trigger: trigger,
-    });
-    return notificationId
+export async function updateNotification(id, title, body, data, trigger) {
+    await Notifications.cancelScheduledNotificationAsync(id)
+    await schedulePushNotification(title, body, data, trigger)
 }

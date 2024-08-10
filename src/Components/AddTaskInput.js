@@ -6,7 +6,7 @@ import IconButton from './Buttons/IconButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { ScreenDimensions } from 'util';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import { scheduleDateAlert, scheduleTimeAlert } from 'Notifications';
+import { schedulePushNotification } from 'Notifications';
 
 function AddTaskInput({ parentId, listIndex, style }) {
     let listStates = useSelector((state) => state.listReducer)
@@ -60,11 +60,12 @@ function AddTaskInput({ parentId, listIndex, style }) {
                             setInputFocused(false)
                             let dateId, timeId = null
                             if (date != null && date.getDate() - new Date().getDate() > 0) {
-                                dateId = await scheduleDateAlert(newTask, "A task is due today!", {}, { date: date.getDate() })
+                                dateId = await schedulePushNotification(newTask, "A task is due!", {}, { date: date.getDate() })
 
                             }
-                            if (time != null) {
-                                timeId = await scheduleTimeAlert(newTask, "A task is due!", {}, { minute: time.getMinutes(), hour: time.getHours() })
+                            if (time != null && time.getMinutes() - new Date().getMinutes() > 0) {
+                                console.log(time.getMinutes() - new Date().getMinutes())
+                                timeId = await schedulePushNotification(newTask, "A task is due!", {}, { minute: time.getMinutes(), hour: time.getHours() })
                             }
                             dispatch({
                                 type: "ADD_SUBLIST_ITEM",
