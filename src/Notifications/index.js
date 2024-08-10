@@ -112,5 +112,6 @@ export async function schedulePushNotification(title, body, data, trigger) {
 
 export async function updateNotification(id, title, body, data, trigger) {
     await Notifications.cancelScheduledNotificationAsync(id)
-    await schedulePushNotification(title, body, data, trigger)
+    const newId = await schedulePushNotification(title, body, data, trigger)
+    return newId
 }

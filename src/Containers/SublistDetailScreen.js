@@ -96,7 +96,7 @@ function SublistDetailScreen({ navigation, route, style }) {
                 <View style={{ flexDirection: 'row', marginVertical: 10 }}>
                     <IconButton name={"alarm"} onPress={() => setTimePickerVisible(true)} />
                     {time != null &&
-                        <AppText>{new Date(time).toUTCString().substring(0, 16)}</AppText>
+                        <AppText>{new Date(time).getHours() % 12 + ":" + new Date(time).getMinutes()}</AppText>
                     }
                 </View>
             </View>
@@ -117,6 +117,13 @@ function SublistDetailScreen({ navigation, route, style }) {
                 onConfirm={(newDate) => {
                     setDate(newDate)
                     setDatePickerVisible(false)
+                    dispatch({
+                        type: "SET_SUBLIST_DUE_DATE", payload: {
+                            itemId: item.id,
+                            parentId: item.parentId,
+                            dueDate: newDate.toISOString()
+                        }
+                    })
                 }}
                 onCancel={() => {
                     setDate(null)
@@ -131,6 +138,13 @@ function SublistDetailScreen({ navigation, route, style }) {
                 onConfirm={(newTime) => {
                     setTime(newTime)
                     setTimePickerVisible(false)
+                    dispatch({
+                        type: "SET_SUBLIST_DUE_TIME", payload: {
+                            itemId: item.id,
+                            parentId: item.parentId,
+                            dueTime: newTime.toISOString()
+                        }
+                    })
                 }}
                 onCancel={() => {
                     setTime(null)

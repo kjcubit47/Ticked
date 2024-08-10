@@ -60,12 +60,18 @@ function AddTaskInput({ parentId, listIndex, style }) {
                             setInputFocused(false)
                             let dateId, timeId = null
                             if (date != null && date.getDate() - new Date().getDate() > 0) {
-                                dateId = await schedulePushNotification(newTask, "A task is due!", {}, { date: date.getDate() })
-
+                                try {
+                                    dateId = await schedulePushNotification(newTask, "A task is due!", {}, { date: date.getDate() })
+                                } catch (error) {
+                                    console.log(error)
+                                }
                             }
                             if (time != null && time.getMinutes() - new Date().getMinutes() > 0) {
-                                console.log(time.getMinutes() - new Date().getMinutes())
-                                timeId = await schedulePushNotification(newTask, "A task is due!", {}, { minute: time.getMinutes(), hour: time.getHours() })
+                                try {
+                                    timeId = await schedulePushNotification(newTask, "A task is due!", {}, { minute: time.getMinutes(), hour: time.getHours() })
+                                } catch (error) {
+                                    console.log(error)
+                                }
                             }
                             dispatch({
                                 type: "ADD_SUBLIST_ITEM",
