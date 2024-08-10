@@ -12,10 +12,24 @@ import ListSeparator from 'Components/ListSeparator';
 import ListSettingsModal from 'Components/Modals/ListSettingsModal';
 import SublistItem from 'Components/SublistItem';
 import { isAndroid } from 'util';
+import { getAllScheduledNotificationsAsync } from 'expo-notifications';
 
 
 function ListScreen({ navigation, route, refreshFromChild }) {
 
+    useEffect(() => {
+        async function test() {
+            let nots = await getAllScheduledNotificationsAsync()
+            // console.log(nots)
+            return nots
+        }
+        test().then((pp) => {
+            pp.forEach((cir) => {
+                console.log(cir.content.title)
+                console.log(cir.trigger.dateComponents)
+            })
+        })
+    })
 
     let listStates = useSelector((state) => state.listReducer)
 
