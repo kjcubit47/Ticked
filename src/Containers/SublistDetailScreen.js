@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import Screen from './Screen';
 import Header from 'Components/Header/Header';
 import IconButton from 'Components/Buttons/IconButton';
@@ -165,9 +165,10 @@ const styles = StyleSheet.create({
         color: COLORS.light,
         fontSize: 20,
         padding: 5,
-        height: ScreenDimensions.height * 0.2,
-        maxHeight: ScreenDimensions.height * 0.2,
+        height: Dimensions.get('window').height * 0.2,
+        maxHeight: Dimensions.get('window').height * 0.2,
     }
 });
+
 
 export default SublistDetailScreen;
