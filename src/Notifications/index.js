@@ -114,7 +114,7 @@ export async function scheduleDateAlert(title, body, data, trigger) {
             body: body,
             data: data, // Not presented to user
         },
-        trigger: { trigger },
+        trigger: trigger,
     });
     return notificationId
 

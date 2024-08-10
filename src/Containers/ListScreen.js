@@ -20,9 +20,12 @@ function ListScreen({ navigation, route, refreshFromChild }) {
     useEffect(() => {
         async function test() {
             let nots = await getAllScheduledNotificationsAsync()
-            console.log(nots)
+            // console.log(nots)
+            return nots
         }
-        test()
+        test().then((pp) => {
+            console.log(pp.length)
+        })
     })
 
     let listStates = useSelector((state) => state.listReducer)

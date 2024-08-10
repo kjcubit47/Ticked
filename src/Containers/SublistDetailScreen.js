@@ -12,6 +12,7 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 
 function SublistDetailScreen({ navigation, route, style }) {
     const { item } = route.params
+    const [itemTitle, setItemTitle] = useState(item.title)
     const [itemComplete, setItemComplete] = useState(item.complete)
     const [itemImportant, setItemImportant] = useState(item.important)
     const [notesText, setNotesText] = useState(item.note)
@@ -52,8 +53,21 @@ function SublistDetailScreen({ navigation, route, style }) {
                     name={itemImportant == true ? 'star' : 'star-outline'}
                     color={itemImportant == true ? 'yellow' : COLORS.light} />
 
-                <AppText style={itemComplete ? STYLES.ListTextComplete : STYLES.Text}>{item.title}</AppText>
+                <AppText style={itemComplete ? STYLES.ListTextComplete : STYLES.Text}></AppText>
+                <TextInput style={itemComplete ? STYLES.ListTextComplete : STYLES.Text}
+                    editable={!itemComplete}
+                    defaultValue={item.title}
+                    onChangeText={(text) => {
+                        setItemTitle(text)
+                    }}
+                    blurOnSubmit={true}
+                    onBlur={() => {
+                        dispatch({ type: "SET_SUBLIST_TITLE", payload: { parentId: item.parentId, id: item.id, title: itemTitle } })
+                    }}
+                    onSubmitEditing={() => {
 
+                    }}
+                />
                 <IconButton
                     onPress={
                         () => {

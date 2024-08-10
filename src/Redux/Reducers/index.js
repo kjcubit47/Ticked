@@ -1,6 +1,14 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import { cancelScheduledNotificationAsync } from "expo-notifications";
+import * as Notifications from "expo-notifications"
+import { scheduleDateAlert } from "Notifications";
 import types from "Redux/Actions/ActionTypes"
+
+// async function d() {
+//     await Notifications.cancelAllScheduledNotificationsAsync()
+
+
+// }
+// d()
 
 const initialListState = {
     lists: [],
@@ -31,10 +39,10 @@ function listStateReducer(state = initialListState, action) {
 
                 for (const sublist in deleteListState[dlIndex]) {
                     if (sublist.dueDate != null) {
-                        await cancelScheduledNotificationAsync(sublist.dueDate)
+                        await Notifications.cancelScheduledNotificationAsync(sublist.dueDate)
                     }
                     if (sublist.dueTime != null) {
-                        await cancelScheduledNotificationAsync(sublist.dueTime)
+                        await Notifications.cancelScheduledNotificationAsync(sublist.dueTime)
                     }
                 }
             }
@@ -82,6 +90,22 @@ function listStateReducer(state = initialListState, action) {
 
 
             }
+
+        case types.SET_SUBLIST_TITLE:
+            const newSublistTitleState = JSON.parse(JSON.stringify(state.lists))
+            let sstIndex = newSublistTitleState.findIndex((item) => {
+                return item.id == action.payload.parentId
+            })
+            let sstIndex2 = newSublistTitleState[sstIndex].sublist.findIndex((item) => {
+                return item.id == action.payload.id
+            })
+            newSublistTitleState[sstIndex].sublist[sstIndex2].title = action.payload.title
+
+            return {
+                ...state,
+                lists: newSublistTitleState,
+            }
+
         case types.SET_ITEM_COMPLETE:
             const SetItemCompleteState = JSON.parse(JSON.stringify(state.lists))
             let sicIndex = SetItemCompleteState.findIndex((item) => {
