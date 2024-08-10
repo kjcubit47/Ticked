@@ -57,15 +57,14 @@ function AddTaskInput({ parentId, listIndex, style }) {
                     }}
                     onSubmitEditing={async () => {
                         if (listStates.lists[listIndex]) {
-
                             setInputFocused(false)
                             let dateId, timeId = null
-                            if (date != null) {
-                                dateId = await scheduleDateAlert(newTask, "A task is due today!", {}, { date })
+                            if (date != null && date.getDate() - new Date().getDate() > 0) {
+                                dateId = await scheduleDateAlert(newTask, "A task is due today!", {}, { date: date.getDate() })
 
                             }
                             if (time != null) {
-                                timeId = await scheduleTimeAlert(newTask, "A task is due!", {}, { seconds: time.getSeconds(), })
+                                timeId = await scheduleTimeAlert(newTask, "A task is due!", {}, { minute: time.getMinutes(), hour: time.getHours() })
                             }
                             dispatch({
                                 type: "ADD_SUBLIST_ITEM",

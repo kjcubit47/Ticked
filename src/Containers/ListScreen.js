@@ -24,7 +24,9 @@ function ListScreen({ navigation, route, refreshFromChild }) {
             return nots
         }
         test().then((pp) => {
-            console.log(pp.length)
+            pp.forEach((cir) => {
+                console.log(cir.content.title)
+            })
         })
     })
 

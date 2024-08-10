@@ -30,7 +30,7 @@ export async function registerForPushNotificationsAsync() {
         });
     }
 
-    if (Device.isDevice) {
+    if (Device.isDevice || true) {
         const { status: existingStatus } = await Notifications.getPermissionsAsync();
         let finalStatus = existingStatus;
         if (existingStatus !== 'granted') {
@@ -108,6 +108,8 @@ Notifications.setNotificationHandler({
 // });
 
 export async function scheduleDateAlert(title, body, data, trigger) {
+    console.log(title, body, data, trigger)
+
     const notificationId = await Notifications.scheduleNotificationAsync({
         content: {
             title: title,
