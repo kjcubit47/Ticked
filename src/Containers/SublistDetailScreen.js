@@ -53,10 +53,11 @@ function SublistDetailScreen({ navigation, route, style }) {
                     name={itemImportant == true ? 'star' : 'star-outline'}
                     color={itemImportant == true ? 'yellow' : COLORS.light} />
 
-                <AppText style={itemComplete ? STYLES.ListTextComplete : STYLES.Text}></AppText>
                 <TextInput style={itemComplete ? STYLES.ListTextComplete : STYLES.Text}
+                    hitSlop={{ top: 15, bottom: 15, left: 0, right: 0 }}
                     editable={!itemComplete}
                     defaultValue={itemTitle}
+                    autoCorrect={false}
                     onChangeText={(text) => {
                         setItemTitle(text)
                     }}

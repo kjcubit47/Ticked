@@ -84,6 +84,7 @@ function ListScreen({ navigation, route }) {
                         autoFocus={listName === ''}
                         defaultValue={listName}
                         autoComplete='false'
+                        autoCorrect={false}
                         style={[STYLES.TextInput, {
                             marginBottom: (isAndroid() && listNameFocused) ? 10 : 0,
                         }]}

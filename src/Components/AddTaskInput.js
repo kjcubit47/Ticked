@@ -35,6 +35,8 @@ function AddTaskInput({ parentId, listIndex, style }) {
                     editable={listStates.lists[listIndex] != undefined}
                     placeholder='Add an item'
                     placeholderTextColor={'white'}
+                    autoCorrect={false}
+
                     style={[STYLES.TextInput, styles.textBox]}
                     onChangeText={(text) => {
                         setNewTask(text)
