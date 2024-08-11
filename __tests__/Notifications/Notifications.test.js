@@ -1,7 +1,7 @@
 import * as Notifications from 'expo-notifications'
 import { schedulePushNotification } from 'Notifications'
 import store from 'Redux/Store'
-
+// ALL TESTS BROKEN , NEED FIX
 describe("Notifications", () => {
     test("Initial notification count should be 0", async () => {
         let count = await Notifications.getAllScheduledNotificationsAsync()
