@@ -62,11 +62,11 @@ function SublistDetailScreen({ navigation, route, style }) {
                     }}
                     blurOnSubmit={true}
                     onBlur={() => {
-                        dispatch({ type: "SET_SUBLIST_TITLE", payload: { parentId: item.parentId, id: item.id, title: itemTitle } })
-
                     }}
-                    onSubmitEditing={() => {
-                        dispatch({ type: "SET_SUBLIST_TITLE", payload: { parentId: item.parentId, id: item.id, title: itemTitle } })
+                    onSubmitEditing={(text) => {
+                        if (itemTitle == '')
+                            setItemTitle('Untitled')
+                        dispatch({ type: "SET_SUBLIST_TITLE", payload: { parentId: item.parentId, id: item.id, title: itemTitle == '' ? 'Untitled' : itemTitle } })
                     }}
                 />
                 <IconButton
