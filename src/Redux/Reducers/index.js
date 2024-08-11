@@ -19,7 +19,7 @@ function listStateReducer(state = initialListState, action) {
     switch (action.type) {
         case types.RESET_STATE:
             Notifications.cancelAllScheduledNotificationsAsync()
-            console.log("Notifications cleared.")
+            console.log("State Reset, Notifications cleared")
             return initialListState;
         case types.SET_LIST_COUNT:
             return {

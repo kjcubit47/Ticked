@@ -121,7 +121,7 @@ function SublistDetailScreen({ navigation, route, style }) {
                         type: "SET_SUBLIST_DUE_DATE", payload: {
                             itemId: item.id,
                             parentId: item.parentId,
-                            dueDate: newDate.toISOString()
+                            dueDate: JSON.parse(JSON.stringify(newDate))
                         }
                     })
                 }}
@@ -142,7 +142,7 @@ function SublistDetailScreen({ navigation, route, style }) {
                         type: "SET_SUBLIST_DUE_TIME", payload: {
                             itemId: item.id,
                             parentId: item.parentId,
-                            dueTime: newTime.toISOString()
+                            dueTime: JSON.parse(JSON.stringify(newTime))
                         }
                     })
                 }}

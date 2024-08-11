@@ -2,5 +2,10 @@
     "compilerOptions": {
         "baseUrl": "./src",
         "jsx": "react"
+    },
+    "typeAcquisition": {
+        "include": [
+            "jest"
+        ]
     }
 }
