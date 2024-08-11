@@ -18,7 +18,8 @@ export async function registerForPushNotificationsAsync() {
         });
     }
 
-    if (Device.isDevice || true) {
+    // if (Device.isDevice) 
+    if (process.env.TESTING != 'true') {
         const { status: existingStatus } = await Notifications.getPermissionsAsync();
         let finalStatus = existingStatus;
         if (existingStatus !== 'granted') {

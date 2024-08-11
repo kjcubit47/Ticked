@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native"
+import { Dimensions, StyleSheet } from "react-native"
 import { Colors } from "react-native/Libraries/NewAppScreen"
 import { ScreenDimensions } from "util"
 
@@ -59,7 +59,7 @@ export const STYLES = {
     "TextInput": {
         padding: 10,
         fontSize: 20,
-        width: ScreenDimensions.width * 0.7,
+        width: Dimensions.get('window').width * 0.7,
         backgroundColor: COLORS.secondary,
         color: 'white',
         borderRadius: 10

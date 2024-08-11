@@ -19,7 +19,7 @@ function listStateReducer(state = initialListState, action) {
     switch (action.type) {
         case types.RESET_STATE:
             Notifications.cancelAllScheduledNotificationsAsync()
-            console.log("Notifications cleared.")
+            console.log("State Reset, Notifications cleared")
             return initialListState;
         case types.SET_LIST_COUNT:
             return {
@@ -146,14 +146,18 @@ function listStateReducer(state = initialListState, action) {
             let dssIndex = deleteSublistState.findIndex((item) => {
                 return item.id == action.payload.parentId
             })
-            deleteSublistState[dssIndex].sublist = deleteSublistState[dssIndex].sublist.filter(item => { return item.id !== action.payload.itemId })
-            let dssItem = SetItemCompleteState[sicIndex].sublist[sicIndex2]
+            let dssIndex2 = deleteSublistState[dssIndex].sublist.findIndex(item => { return item.id == action.payload.itemId })
+
+
+            let dssItem = deleteSublistState[dssIndex].sublist[dssIndex2]
+
             if (dssItem.dueDate != null) {
                 Notifications.cancelScheduledNotificationAsync(dssItem.notificationDateId)
             }
             if (dssItem.dueTime != null) {
                 Notifications.cancelScheduledNotificationAsync(dssItem.notificationTimeId)
             }
+            deleteSublistState[dssIndex].sublist = deleteSublistState[dssIndex].sublist.filter(item => { return item.id !== action.payload.itemId })
             return {
                 ...state,
                 lists: deleteSublistState
