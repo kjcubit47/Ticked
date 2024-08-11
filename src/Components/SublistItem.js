@@ -9,7 +9,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 
 function SublistItem({ style, onPress, refresh, item }) {
+
     const state = useSelector(state => state.listReducer)
+
     let index1 = state.lists.findIndex((current) => {
         return item.parentId == current.id
     })
@@ -19,7 +21,7 @@ function SublistItem({ style, onPress, refresh, item }) {
     // const stateItem = useSelector(state => state.listReducer.lists[item.parentId].sublist[item.id])
     const stateItem = useSelector(state => state.listReducer.lists[index1].sublist[index2])
 
-    const [itemComplete, setItemComplete] = useState(stateItem.complete)
+    const [itemComplete, setItemComplete] = useState(item.complete)
     const [itemImportant, setItemImportant] = useState(stateItem.important)
 
     const dispatch = useDispatch()
@@ -34,8 +36,8 @@ function SublistItem({ style, onPress, refresh, item }) {
                 <IconButton
                     name='trash'
                     onPress={() => {
-                        refresh()
                         dispatch({ type: "DELETE_SUBLIST_ITEM", payload: { parentId: item.parentId, itemId: item.id } })
+                        refresh()
                     }} />
 
             </Animated.View>
@@ -63,7 +65,7 @@ function SublistItem({ style, onPress, refresh, item }) {
                     style={styles.iconLeft}
                     name={stateItem.important == true ? 'star' : 'star-outline'}
                     color={stateItem.important == true ? 'yellow' : COLORS.light} />
-                <Text style={itemComplete ? STYLES.ListTextComplete : STYLES.Text}>{item.title}</Text>
+                <Text style={stateItem.complete == true ? STYLES.ListTextComplete : STYLES.Text}>{item.title}</Text>
                 <IconButton
                     onPress={
                         () => {

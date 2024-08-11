@@ -76,7 +76,7 @@ function AddTaskInput({ parentId, listIndex, style }) {
                             dispatch({
                                 type: "ADD_SUBLIST_ITEM",
                                 payload: {
-                                    title: newTask,
+                                    title: newTask == '' ? 'Untitled' : newTask,
                                     id: stateIdCount,
                                     parentId: parentId,
                                     note: '',

@@ -15,7 +15,7 @@ import { isAndroid } from 'util';
 import { getAllScheduledNotificationsAsync } from 'expo-notifications';
 
 
-function ListScreen({ navigation, route, refreshFromChild }) {
+function ListScreen({ navigation, route }) {
 
     useEffect(() => {
         async function test() {
@@ -42,10 +42,13 @@ function ListScreen({ navigation, route, refreshFromChild }) {
         return itemId == curr.id
     })
     const [listName, setListName] = listStates.lists[index] ? useState(listStates.lists[index].title) : useState('')
-    const [listRefresher, setListRefresher] = useState(true)
+    const [listRefresher, setListRefresher] = useState(refresh)
     const [modalVisible, setModalVisible] = useState(false)
     const dispatch = useDispatch();
 
+    if (listRefresher == null) {
+        setListRefresher(true)
+    }
 
     function refreshForChild() {
         setListRefresher(!listRefresher)
@@ -100,6 +103,7 @@ function ListScreen({ navigation, route, refreshFromChild }) {
             />
 
             <View style={{ flex: 1, width: '100%', height: '100%' }}>
+
                 {/* flatlist here */}
                 <FlatList
 
@@ -110,7 +114,7 @@ function ListScreen({ navigation, route, refreshFromChild }) {
                             <SublistItem
                                 item={item}
                                 refresh={refreshForChild}
-                                onPress={() => { navigation.navigate("SublistDetailScreen", { item: item }) }}
+                                onPress={() => { navigation.navigate("SublistDetailScreen", { item: item, }) }}
                             />
 
                             <ListSeparator />

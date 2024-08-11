@@ -7,7 +7,6 @@ import { COLORS, STYLES } from 'Constants';
 import { useDispatch } from 'react-redux';
 import AppText from 'Components/AppText';
 import { TextInput } from 'react-native-gesture-handler';
-import { ScreenDimensions } from 'util';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 
 function SublistDetailScreen({ navigation, route, style }) {
@@ -27,7 +26,8 @@ function SublistDetailScreen({ navigation, route, style }) {
                 leftItem={<IconButton
                     name='chevron-back'
                     onPress={() => {
-                        navigation.pop()
+
+                        navigation.navigate("ListScreen", { refresh: "true", itemId: item.parentId })
                     }}
                 />}
                 style={{ height: '5%' }}
@@ -56,16 +56,17 @@ function SublistDetailScreen({ navigation, route, style }) {
                 <AppText style={itemComplete ? STYLES.ListTextComplete : STYLES.Text}></AppText>
                 <TextInput style={itemComplete ? STYLES.ListTextComplete : STYLES.Text}
                     editable={!itemComplete}
-                    defaultValue={item.title}
+                    defaultValue={itemTitle}
                     onChangeText={(text) => {
                         setItemTitle(text)
                     }}
                     blurOnSubmit={true}
                     onBlur={() => {
                         dispatch({ type: "SET_SUBLIST_TITLE", payload: { parentId: item.parentId, id: item.id, title: itemTitle } })
+
                     }}
                     onSubmitEditing={() => {
-
+                        dispatch({ type: "SET_SUBLIST_TITLE", payload: { parentId: item.parentId, id: item.id, title: itemTitle } })
                     }}
                 />
                 <IconButton
