@@ -109,6 +109,22 @@ function listStateReducer(state = initialListState, action) {
                 return item.id == action.payload.itemId
             })
             SetItemCompleteState[sicIndex].sublist[sicIndex2].complete = action.payload.complete
+            if (action.payload.complete == true) {
+                if (SetItemCompleteState[sicIndex].sublist[sicIndex2].notificationDateId != null) {
+                    SetItemCompleteState[sicIndex].sublist[sicIndex2].notificationDateId = null
+                    // SetItemCompleteState[sicIndex].sublist[sicIndex2].dueDate = null
+                }
+                if (SetItemCompleteState[sicIndex].sublist[sicIndex2].notificationTimeId != null) {
+                    // SetItemCompleteState[sicIndex].sublist[sicIndex2].dueTime = null
+                }
+            } else {
+                if (action.payload.notificationDateId != null) {
+                    SetItemCompleteState[sicIndex].sublist[sicIndex2].notificationDateId = action.payload.notificationDateId
+                }
+                if (action.payload.notificationTimeId != null) {
+                    SetItemCompleteState[sicIndex].sublist[sicIndex2].notificationTimeId = action.payload.notificationTimeId
+                }
+            }
 
             return {
                 ...state,

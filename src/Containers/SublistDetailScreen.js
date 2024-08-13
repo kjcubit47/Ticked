@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import AppText from 'Components/AppText';
 import { TextInput } from 'react-native-gesture-handler';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import { deleteSublistItemNotification } from 'Notifications/Actionhelpers';
+import { deleteSublistItemNotification, rescheduleItemNotifications } from 'Notifications/Actionhelpers';
 import { formatTime, formatDate } from 'util';
 import { updateNotification } from 'Notifications';
 
@@ -95,11 +95,15 @@ function SublistDetailScreen({ navigation, route, style }) {
                 <IconButton
                     onPress={
                         async () => {
+                            let newDateId
+                            let newTimeId
                             if (!itemComplete) {
                                 await deleteSublistItemNotification(item.id, item.parentId)
+                            } else {
+                                const [newDateId, newTimeId] = await rescheduleItemNotifications(item.id, item.parentId)
                             }
                             setItemComplete(!itemComplete);
-                            dispatch({ type: 'SET_ITEM_COMPLETE', payload: { parentId: item.parentId, itemId: item.id, complete: !itemComplete } })
+                            dispatch({ type: 'SET_ITEM_COMPLETE', payload: { parentId: item.parentId, itemId: item.id, complete: !itemComplete, notificationDateId: newDateId, notificationTimeId: newTimeId } })
                         }
                     }
                     style={{

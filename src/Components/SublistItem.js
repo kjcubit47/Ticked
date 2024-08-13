@@ -4,7 +4,7 @@ import IconButton from './Buttons/IconButton';
 import { COLORS, STYLES } from 'Constants';
 import { Swipeable } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteSublistItemNotification } from 'Notifications/Actionhelpers';
+import { deleteSublistItemNotification, rescheduleItemNotifications } from 'Notifications/Actionhelpers';
 
 
 
@@ -72,11 +72,15 @@ function SublistItem({ style, onPress, refresh, item }) {
                 <IconButton
                     onPress={
                         async () => {
+                            let newDateId
+                            let newTimeId
                             if (!itemComplete) {
                                 await deleteSublistItemNotification(item.id, item.parentId)
+                            } else {
+                                [newDateId, newTimeId] = await rescheduleItemNotifications(item.id, item.parentId)
                             }
                             setItemComplete(!itemComplete);
-                            dispatch({ type: 'SET_ITEM_COMPLETE', payload: { parentId: item.parentId, itemId: item.id, complete: !itemComplete } })
+                            dispatch({ type: 'SET_ITEM_COMPLETE', payload: { parentId: item.parentId, itemId: item.id, complete: !itemComplete, notificationDateId: newDateId, notificationTimeId: newTimeId } })
                             refresh();
                         }
                     }
