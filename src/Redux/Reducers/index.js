@@ -1,5 +1,5 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import * as Notifications from "expo-notifications"
+// import * as Notifications from "expo-notifications"
 import { schedulePushNotification, updateNotification } from "Notifications";
 import types from "Redux/Actions/ActionTypes"
 
@@ -18,7 +18,7 @@ const initialListState = {
 function listStateReducer(state = initialListState, action) {
     switch (action.type) {
         case types.RESET_STATE:
-            Notifications.cancelAllScheduledNotificationsAsync()
+            // Notifications.cancelAllScheduledNotificationsAsync()
             console.log("State Reset, Notifications cleared")
             return initialListState;
         case types.SET_LIST_COUNT:
@@ -34,23 +34,7 @@ function listStateReducer(state = initialListState, action) {
             }
         case types.DELETE_LIST:
             let deleteListState = JSON.parse(JSON.stringify(state.lists))
-            const dlIndex = deleteListState.findIndex((item) => {
-                item.id === action.payload
-            })
-            async function deleteNotifications() {
-
-                for (const sublist in deleteListState[dlIndex]) {
-                    if (sublist.dueDate != null) {
-                        await Notifications.cancelScheduledNotificationAsync(sublist.notificationDateId)
-                    }
-                    if (sublist.dueTime != null) {
-                        await Notifications.cancelScheduledNotificationAsync(sublist.notificationTimeId)
-                    }
-                }
-            }
-            deleteNotifications()
             deleteListState = deleteListState.filter((object) => {
-
                 return object.id != action.payload
             })
             return {
@@ -95,23 +79,20 @@ function listStateReducer(state = initialListState, action) {
 
         case types.SET_SUBLIST_TITLE:
             const newSublistTitleState = JSON.parse(JSON.stringify(state.lists))
+
             let sstIndex = newSublistTitleState.findIndex((item) => {
                 return item.id == action.payload.parentId
             })
             let sstIndex2 = newSublistTitleState[sstIndex].sublist.findIndex((item) => {
                 return item.id == action.payload.id
             })
-            newSublistTitleState[sstIndex].sublist[sstIndex2].title = action.payload.title
-            let tempItem = newSublistTitleState[sstIndex].sublist[sstIndex2]
-            if (newSublistTitleState[sstIndex].sublist[sstIndex2].dueDate != null) {
-                let newDueDateId = updateNotification(tempItem.notificationDateId, tempItem.title, "A task is due!", {}, { date: new Date(tempItem.dueDate).getDate() })
-                newSublistTitleState[sstIndex].sublist[sstIndex2].notificationDateId = newDueDateId
-            }
-            if (newSublistTitleState[sstIndex].sublist[sstIndex2].dueTime != null) {
-                let newTime = new Date(tempItem.dueTime)
-                let newTimeId = updateNotification(tempItem.notificationTimeId, tempItem.title, "A task is due!", {}, { minute: newTime.getMinutes(), hour: newTime.getHours() })
-                newSublistTitleState[sstIndex].sublist[sstIndex2].notificationTimeId = newTimeId
 
+            newSublistTitleState[sstIndex].sublist[sstIndex2].title = action.payload.title
+            if (action.payload.notificationDateId != null) {
+                newSublistTitleState[sstIndex].sublist[sstIndex2].notificationDateId = action.payload.notificationDateId
+            }
+            if (action.payload.notificationTimeId != null) {
+                newSublistTitleState[sstIndex].sublist[sstIndex2].notificationTimeId = action.payload.notificationTimeId
             }
             return {
                 ...state,
@@ -128,13 +109,7 @@ function listStateReducer(state = initialListState, action) {
                 return item.id == action.payload.itemId
             })
             SetItemCompleteState[sicIndex].sublist[sicIndex2].complete = action.payload.complete
-            let thisItem = SetItemCompleteState[sicIndex].sublist[sicIndex2]
-            if (thisItem.dueDate != null) {
-                Notifications.cancelScheduledNotificationAsync(thisItem.notificationDateId)
-            }
-            if (thisItem.dueTime != null) {
-                Notifications.cancelScheduledNotificationAsync(thisItem.notificationTimeId)
-            }
+
             return {
                 ...state,
                 lists: SetItemCompleteState
@@ -149,14 +124,14 @@ function listStateReducer(state = initialListState, action) {
             let dssIndex2 = deleteSublistState[dssIndex].sublist.findIndex(item => { return item.id == action.payload.itemId })
 
 
-            let dssItem = deleteSublistState[dssIndex].sublist[dssIndex2]
+            // let dssItem = deleteSublistState[dssIndex].sublist[dssIndex2]
 
-            if (dssItem.dueDate != null) {
-                Notifications.cancelScheduledNotificationAsync(dssItem.notificationDateId)
-            }
-            if (dssItem.dueTime != null) {
-                Notifications.cancelScheduledNotificationAsync(dssItem.notificationTimeId)
-            }
+            // if (dssItem.dueDate != null) {
+            //     Notifications.cancelScheduledNotificationAsync(dssItem.notificationDateId)
+            // }
+            // if (dssItem.dueTime != null) {
+            //     Notifications.cancelScheduledNotificationAsync(dssItem.notificationTimeId)
+            // }
             deleteSublistState[dssIndex].sublist = deleteSublistState[dssIndex].sublist.filter(item => { return item.id !== action.payload.itemId })
             return {
                 ...state,
@@ -206,18 +181,18 @@ function listStateReducer(state = initialListState, action) {
             })
 
             setSublistDueDateState[ssddIndex].sublist[ssddIndex2].dueDate = action.payload.dueDate
-            let ssddItem = setSublistDueDateState[ssddIndex].sublist[ssddIndex2]
-            if (ssddItem.dueDate != null) {
-                Notifications.cancelScheduledNotificationAsync(ssddItem.notificationTimeId)
-                let newDueDateId = schedulePushNotification(ssddItem.title, "A task is due!", {}, { date: new Date(ssddIndex.dueDate) })
-                setSublistDueDateState[ssddIndex].sublist[ssddIndex2].notificationDateId = newDueDateId
-                if (ssddItem.dueTime != null) {
-                    Notifications.cancelScheduledNotificationAsync(ssddItem.notificationTimeId)
-                    // RESCHEDULE FOR PROPER DATE + TIME ALREADY IN STATE
-                    let newDueTimeId = schedulePushNotification(ssddItem.title, "A task is due!", {}, { date: new Date(ssddItem.dueDate), minute: new Date(ssddItem.dueTime).getMinutes(), hour: new Date(ssddItem.dueTime).getHours() })
-                    setSublistDueDateState[ssddIndex].sublist[ssddIndex2].notificationTimeId = newDueTimeId
-                }
-            }
+            // // let ssddItem = setSublistDueDateState[ssddIndex].sublist[ssddIndex2]
+            // // if (ssddItem.dueDate != null) {
+            // //     Notifications.cancelScheduledNotificationAsync(ssddItem.notificationTimeId)
+            // //     let newDueDateId = schedulePushNotification(ssddItem.title, "A task is due!", {}, { date: new Date(ssddIndex.dueDate) })
+            // //     setSublistDueDateState[ssddIndex].sublist[ssddIndex2].notificationDateId = newDueDateId
+            // //     if (ssddItem.dueTime != null) {
+            // //         Notifications.cancelScheduledNotificationAsync(ssddItem.notificationTimeId)
+            // //         // RESCHEDULE FOR PROPER DATE + TIME ALREADY IN STATE
+            // //         let newDueTimeId = schedulePushNotification(ssddItem.title, "A task is due!", {}, { date: new Date(ssddItem.dueDate), minute: new Date(ssddItem.dueTime).getMinutes(), hour: new Date(ssddItem.dueTime).getHours() })
+            // //         setSublistDueDateState[ssddIndex].sublist[ssddIndex2].notificationTimeId = newDueTimeId
+            // //     }
+            // }
             return {
                 ...state,
                 lists: setSublistDueDateState
@@ -234,13 +209,13 @@ function listStateReducer(state = initialListState, action) {
 
             setSublistDueTimeState[ssdtIndex].sublist[ssdtIndex2].dueTime = action.payload.dueTime
 
-            let ssdtItem = setSublistDueTimeState[ssdtIndex].sublist[ssdtIndex2]
+            // let ssdtItem = setSublistDueTimeState[ssdtIndex].sublist[ssdtIndex2]
 
-            if (ssdtItem.notificationTimeId != null) {
-                Notifications.cancelScheduledNotificationAsync(ssdtItem.notificationTimeId)
-                let newTimeId = schedulePushNotification(ssdtItem.title, "A task is due!", {}, { minute: new Date(ssdtItem.dueTime).getMinutes(), hour: new Date(ssdtItem.dueTime).getHours() })
-                setSublistDueTimeState[ssdtIndex].sublist[ssdtIndex2].notificationTimeId = newTimeId
-            }
+            // if (ssdtItem.notificationTimeId != null) {
+            //     Notifications.cancelScheduledNotificationAsync(ssdtItem.notificationTimeId)
+            //     let newTimeId = schedulePushNotification(ssdtItem.title, "A task is due!", {}, { minute: new Date(ssdtItem.dueTime).getMinutes(), hour: new Date(ssdtItem.dueTime).getHours() })
+            //     setSublistDueTimeState[ssdtIndex].sublist[ssdtIndex2].notificationTimeId = newTimeId
+            // }
 
             return {
                 ...state,

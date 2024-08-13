@@ -4,11 +4,15 @@
     "slug": "TodoApp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "notification": {
+      "icon": "./assets/TICKED_NOTIFICATION_ICON.png",
+      "color": "#fffff"
+    },
+    "icon": "./assets/TICKED_APP_ICON.png",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
+      "image": "./assets/TICKED_SPLASH_SCREEN.png",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
     "ios": {
@@ -27,7 +31,7 @@
       [
         "expo-notifications",
         {
-          "icon": "./assets/LoginScreenBackground.jpeg",
+          "icon": "./assets/TICKED_APP_ICON.png",
           // "icon": "./local/assets/notification-icon.png",
           "color": "#ffffff"
         }

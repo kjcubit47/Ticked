@@ -26,7 +26,7 @@ function ListScreen({ navigation, route }) {
         test().then((pp) => {
             pp.forEach((cir) => {
                 console.log(cir.content.title)
-                console.log(cir.trigger.dateComponents)
+                console.log(cir.trigger)
             })
         })
     })

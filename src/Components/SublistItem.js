@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, Text, Animated } from 'react-native';
 import IconButton from './Buttons/IconButton';
 import { COLORS, STYLES } from 'Constants';
 import { Swipeable } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
+import { deleteSublistItemNotification } from 'Notifications/Actionhelpers';
 
 
 
@@ -20,10 +21,12 @@ function SublistItem({ style, onPress, refresh, item }) {
     })
     // const stateItem = useSelector(state => state.listReducer.lists[item.parentId].sublist[item.id])
     const stateItem = useSelector(state => state.listReducer.lists[index1].sublist[index2])
-
-    const [itemComplete, setItemComplete] = useState(item.complete)
+    const [itemComplete, setItemComplete] = useState(stateItem.complete)
     const [itemImportant, setItemImportant] = useState(stateItem.important)
-
+    useEffect(() => {
+        setItemComplete(stateItem.complete)
+        setItemImportant(stateItem.important)
+    })
     const dispatch = useDispatch()
 
     const renderRightActions = (
@@ -35,7 +38,8 @@ function SublistItem({ style, onPress, refresh, item }) {
             <Animated.View style={{ justifyContent: 'center', backgroundColor: COLORS.danger }}>
                 <IconButton
                     name='trash'
-                    onPress={() => {
+                    onPress={async () => {
+                        await deleteSublistItemNotification(item.id, item.parentId)
                         dispatch({ type: "DELETE_SUBLIST_ITEM", payload: { parentId: item.parentId, itemId: item.id } })
                         refresh()
                     }} />
@@ -56,7 +60,6 @@ function SublistItem({ style, onPress, refresh, item }) {
                 <IconButton
                     onPress={
                         () => {
-
                             setItemImportant(!itemImportant);
                             dispatch({ type: 'SET_SUBLIST_IMPORTANT', payload: { parentId: item.parentId, itemId: item.id, important: !itemImportant } })
                             refresh();
@@ -68,7 +71,10 @@ function SublistItem({ style, onPress, refresh, item }) {
                 <Text style={stateItem.complete == true ? STYLES.ListTextComplete : STYLES.Text}>{item.title}</Text>
                 <IconButton
                     onPress={
-                        () => {
+                        async () => {
+                            if (!itemComplete) {
+                                await deleteSublistItemNotification(item.id, item.parentId)
+                            }
                             setItemComplete(!itemComplete);
                             dispatch({ type: 'SET_ITEM_COMPLETE', payload: { parentId: item.parentId, itemId: item.id, complete: !itemComplete } })
                             refresh();

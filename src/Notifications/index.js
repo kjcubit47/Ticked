@@ -54,7 +54,7 @@ export async function registerForPushNotificationsAsync() {
 
     return token;
 }
-export function initNotifications(notificationListener, responseListener, setExpoPushToken, setNotification) {
+export function initNotifications(notificationListener, responseListener, setExpoPushToken, setNotification, setChannels) {
     registerForPushNotificationsAsync().then(token => token && setExpoPushToken(token));
 
     if (Platform.OS === 'android') {
@@ -96,8 +96,7 @@ Notifications.setNotificationHandler({
 //     trigger: null,
 // });
 
-export async function schedulePushNotification(title, body, data, trigger) {
-    console.log(title, body, data, trigger)
+export async function schedulePushNotification(title, body = "A task is due!", data = {}, trigger) {
 
     const notificationId = await Notifications.scheduleNotificationAsync({
         content: {
@@ -112,6 +111,8 @@ export async function schedulePushNotification(title, body, data, trigger) {
 }
 
 export async function updateNotification(id, title, body, data, trigger) {
+
+    console.log(trigger)
     await Notifications.cancelScheduledNotificationAsync(id)
     const newId = await schedulePushNotification(title, body, data, trigger)
     return newId

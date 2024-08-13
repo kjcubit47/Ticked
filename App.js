@@ -27,7 +27,7 @@ export default function App() {
   const responseListener = useRef();
 
   useEffect(() => {
-    initNotifications(notificationListener, responseListener, setExpoPushToken, setNotification)
+    initNotifications(notificationListener, responseListener, setExpoPushToken, setNotification, setChannels)
   }, []);
 
   return (

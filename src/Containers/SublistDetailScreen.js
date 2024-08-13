@@ -4,19 +4,32 @@ import Screen from './Screen';
 import Header from 'Components/Header/Header';
 import IconButton from 'Components/Buttons/IconButton';
 import { COLORS, STYLES } from 'Constants';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AppText from 'Components/AppText';
 import { TextInput } from 'react-native-gesture-handler';
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import { deleteSublistItemNotification } from 'Notifications/Actionhelpers';
+import { formatTime, formatDate } from 'util';
+import { updateNotification } from 'Notifications';
 
 function SublistDetailScreen({ navigation, route, style }) {
     const { item } = route.params
-    const [itemTitle, setItemTitle] = useState(item.title)
-    const [itemComplete, setItemComplete] = useState(item.complete)
-    const [itemImportant, setItemImportant] = useState(item.important)
-    const [notesText, setNotesText] = useState(item.note)
-    const [date, setDate] = useState(item.dueDate)
-    const [time, setTime] = useState(item.dueTime)
+    const state = useSelector(state => state.listReducer)
+
+    let index1 = state.lists.findIndex((current) => {
+        return item.parentId == current.id
+    })
+    let index2 = state.lists[index1].sublist.findIndex((current) => {
+        return item.id == current.id
+    })
+    // const stateItem = useSelector(state => state.listReducer.lists[item.parentId].sublist[item.id])
+    const stateItem = useSelector(state => state.listReducer.lists[index1].sublist[index2])
+    const [itemTitle, setItemTitle] = useState(stateItem.title)
+    const [itemComplete, setItemComplete] = useState(stateItem.complete)
+    const [itemImportant, setItemImportant] = useState(stateItem.important)
+    const [notesText, setNotesText] = useState(stateItem.note)
+    const [date, setDate] = useState(stateItem.dueDate)
+    const [time, setTime] = useState(stateItem.dueTime)
     const [datePickerVisible, setDatePickerVisible] = useState(false)
     const [timePickerVisible, setTimePickerVisible] = useState(false)
     const dispatch = useDispatch()
@@ -64,15 +77,27 @@ function SublistDetailScreen({ navigation, route, style }) {
                     blurOnSubmit={true}
                     onBlur={() => {
                     }}
-                    onSubmitEditing={(text) => {
+                    onSubmitEditing={async (text) => {
+                        let newTimeId = null;
+                        let newDateId = null;
                         if (itemTitle == '')
                             setItemTitle('Untitled')
-                        dispatch({ type: "SET_SUBLIST_TITLE", payload: { parentId: item.parentId, id: item.id, title: itemTitle == '' ? 'Untitled' : itemTitle } })
+                        if (stateItem.notificationDateId != null && new Date() < new Date(stateItem.dueDate)) {
+                            newDateId = await updateNotification(stateItem.notificationDateId, itemTitle == '' ? 'Untitled' : itemTitle, "A task is due!", {}, { date: new Date(stateItem.dueDate) })
+                        }
+                        if (stateItem.notificationTimeId != null && new Date() < new Date(stateItem.dueTime)) {
+                            newTimeId = await updateNotification(stateItem.notificationTimeId, itemTitle == '' ? 'Untitled' : itemTitle, "A task is due!", {}, { minute: new Date(stateItem.dueTime).getMinutes(), hour: new Date(stateItem.dueTime).getHours() })
+
+                        }
+                        dispatch({ type: "SET_SUBLIST_TITLE", payload: { parentId: item.parentId, id: item.id, title: itemTitle == '' ? 'Untitled' : itemTitle, notificationDateId: newDateId, notificationTimeId: newTimeId } })
                     }}
                 />
                 <IconButton
                     onPress={
-                        () => {
+                        async () => {
+                            if (!itemComplete) {
+                                await deleteSublistItemNotification(item.id, item.parentId)
+                            }
                             setItemComplete(!itemComplete);
                             dispatch({ type: 'SET_ITEM_COMPLETE', payload: { parentId: item.parentId, itemId: item.id, complete: !itemComplete } })
                         }
@@ -91,14 +116,16 @@ function SublistDetailScreen({ navigation, route, style }) {
                         setDatePickerVisible(true)
                     }} />
                     {date != null &&
-                        <AppText>{new Date(date).toUTCString().substring(0, 16)}</AppText>
+                        <AppText>{formatDate(new Date(date))}</AppText>
                     }
                 </View>
 
                 <View style={{ flexDirection: 'row', marginVertical: 10 }}>
                     <IconButton name={"alarm"} onPress={() => setTimePickerVisible(true)} />
                     {time != null &&
-                        <AppText>{new Date(time).getHours() % 12 + ":" + new Date(time).getMinutes()}</AppText>
+                        <AppText>{
+                            formatTime(new Date(time))
+                        }</AppText>
                     }
                 </View>
             </View>

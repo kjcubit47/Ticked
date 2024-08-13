@@ -5,6 +5,7 @@ import IconButton from './Buttons/IconButton';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { ScreenDimensions } from 'util';
+// TODO FIX DATETIMEPICKER WITH PATCH PACKAGE OR WAIT UNTIL DEV FIX
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import { schedulePushNotification } from 'Notifications';
 
@@ -63,7 +64,7 @@ function AddTaskInput({ parentId, listIndex, style }) {
                             let dateId, timeId = null
                             if (date != null && date.getDate() - new Date().getDate() > 0) {
                                 try {
-                                    dateId = await schedulePushNotification(newTask, "A task is due!", {}, { date: date.getDate() })
+                                    dateId = await schedulePushNotification(newTask, "A task is due!", {}, { date: date })
                                 } catch (error) {
                                     console.log(error)
                                 }

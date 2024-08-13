@@ -5,6 +5,7 @@ import { COLORS } from 'Constants';
 import { useDispatch } from 'react-redux';
 import IconButton from './Buttons/IconButton';
 import { Swipeable } from 'react-native-gesture-handler';
+import { deleteListNotifications } from 'Notifications/Actionhelpers';
 function FlatListItem({ title, id, onPress, style, parentStyle }) {
 
     const dispatch = useDispatch()
@@ -18,7 +19,8 @@ function FlatListItem({ title, id, onPress, style, parentStyle }) {
             <Animated.View style={{ justifyContent: 'center', backgroundColor: COLORS.danger }}>
                 <IconButton
                     name='trash'
-                    onPress={() => {
+                    onPress={async () => {
+                        await deleteListNotifications(id)
                         dispatch({ type: "DELETE_LIST", payload: id })
                     }} />
 

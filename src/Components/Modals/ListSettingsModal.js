@@ -5,6 +5,7 @@ import ModalView from './ModalView';
 import AppButton from 'Components/Buttons/AppButton';
 import { COLORS, STYLES } from 'Constants';
 import { useDispatch } from 'react-redux';
+import { deleteListNotifications } from 'Notifications/Actionhelpers';
 
 function ListSettingsModal({ modalVisible, setModalVisible, listId, navigation, setRefresh, refresh }) {
 
@@ -32,6 +33,7 @@ function ListSettingsModal({ modalVisible, setModalVisible, listId, navigation, 
                     textStyle={{ color: COLORS.danger }}
                     style={STYLES.SettingsModalButton}
                     onPress={() => {
+                        deleteListNotifications(listId)
                         dispatch({ type: "DELETE_LIST", payload: listId })
                         setRefresh(!refresh)
                         navigation.navigate("HomeScreen", { refresh: !refresh })
