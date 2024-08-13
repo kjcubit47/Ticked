@@ -86,17 +86,7 @@ function listStateReducer(state = initialListState, action) {
                 return item.id == action.payload.id
             })
             newSublistTitleState[sstIndex].sublist[sstIndex2].title = action.payload.title
-            let tempItem = newSublistTitleState[sstIndex].sublist[sstIndex2]
-            if (newSublistTitleState[sstIndex].sublist[sstIndex2].dueDate != null) {
-                let newDueDateId = updateNotification(tempItem.notificationDateId, tempItem.title, "A task is due!", {}, { date: new Date(tempItem.dueDate).getDate() })
-                newSublistTitleState[sstIndex].sublist[sstIndex2].notificationDateId = newDueDateId
-            }
-            if (newSublistTitleState[sstIndex].sublist[sstIndex2].dueTime != null) {
-                let newTime = new Date(tempItem.dueTime)
-                let newTimeId = updateNotification(tempItem.notificationTimeId, tempItem.title, "A task is due!", {}, { minute: newTime.getMinutes(), hour: newTime.getHours() })
-                newSublistTitleState[sstIndex].sublist[sstIndex2].notificationTimeId = newTimeId
 
-            }
             return {
                 ...state,
                 lists: newSublistTitleState,

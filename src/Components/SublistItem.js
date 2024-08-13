@@ -38,7 +38,8 @@ function SublistItem({ style, onPress, refresh, item }) {
             <Animated.View style={{ justifyContent: 'center', backgroundColor: COLORS.danger }}>
                 <IconButton
                     name='trash'
-                    onPress={() => {
+                    onPress={async () => {
+                        await deleteSublistItemNotification(item.id, item.parentId)
                         dispatch({ type: "DELETE_SUBLIST_ITEM", payload: { parentId: item.parentId, itemId: item.id } })
                         refresh()
                     }} />

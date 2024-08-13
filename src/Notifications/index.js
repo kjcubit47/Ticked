@@ -111,6 +111,8 @@ export async function schedulePushNotification(title, body = "A task is due!", d
 }
 
 export async function updateNotification(id, title, body, data, trigger) {
+
+    console.log(trigger)
     await Notifications.cancelScheduledNotificationAsync(id)
     const newId = await schedulePushNotification(title, body, data, trigger)
     return newId

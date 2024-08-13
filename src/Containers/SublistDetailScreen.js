@@ -10,6 +10,8 @@ import { TextInput } from 'react-native-gesture-handler';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import { deleteSublistItemNotification } from 'Notifications/Actionhelpers';
 import { formatTime } from 'util';
+import { formatDate } from 'util';
+import { updateNotification } from 'Notifications';
 
 function SublistDetailScreen({ navigation, route, style }) {
     const { item } = route.params
@@ -76,9 +78,18 @@ function SublistDetailScreen({ navigation, route, style }) {
                     blurOnSubmit={true}
                     onBlur={() => {
                     }}
-                    onSubmitEditing={(text) => {
+                    onSubmitEditing={async (text) => {
+                        let newTimeId;
+                        let newDateId;
                         if (itemTitle == '')
                             setItemTitle('Untitled')
+                        if (stateItem.notificationDateId != null && new Date() < new Date(stateItem.dueDate)) {
+                            newDateId = await updateNotification(stateItem.notificationDateId, itemTitle == '' ? 'Untitled' : itemTitle, "A task is due!", {}, { date: new Date(stateItem.dueDate) })
+                        }
+                        if (stateItem.notificationTimeId != null && new Date() < new Date(stateItem.dueTime)) {
+                            newTimeId = await updateNotification(stateItem.notificationTimeId, itemTitle == '' ? 'Untitled' : itemTitle, "A task is due!", {}, { minute: new Date(stateItem.dueTime).getMinutes(), hour: new Date(stateItem.dueTime).getHours() })
+
+                        }
                         dispatch({ type: "SET_SUBLIST_TITLE", payload: { parentId: item.parentId, id: item.id, title: itemTitle == '' ? 'Untitled' : itemTitle } })
                     }}
                 />
@@ -106,7 +117,7 @@ function SublistDetailScreen({ navigation, route, style }) {
                         setDatePickerVisible(true)
                     }} />
                     {date != null &&
-                        <AppText>{new Date(date).toUTCString().substring(0, 16)}</AppText>
+                        <AppText>{formatDate(new Date(date))}</AppText>
                     }
                 </View>
 

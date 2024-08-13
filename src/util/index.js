@@ -27,3 +27,17 @@ export function formatTime(date) {
 
     return `${hours}:${minutes} ${period}`;
 }
+export function formatDate(date) {
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const months = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+
+    let dayOfWeek = daysOfWeek[date.getDay()];
+    let dayOfMonth = date.getDate();
+    let month = months[date.getMonth()];
+    let year = date.getFullYear();
+
+    return `${dayOfWeek}, ${dayOfMonth} ${month} ${year}`;
+}
