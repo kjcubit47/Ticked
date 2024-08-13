@@ -97,7 +97,6 @@ Notifications.setNotificationHandler({
 // });
 
 export async function schedulePushNotification(title, body, data, trigger) {
-    console.log(title, body, data, trigger)
 
     const notificationId = await Notifications.scheduleNotificationAsync({
         content: {

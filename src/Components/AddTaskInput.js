@@ -64,7 +64,7 @@ function AddTaskInput({ parentId, listIndex, style }) {
                             let dateId, timeId = null
                             if (date != null && date.getDate() - new Date().getDate() > 0) {
                                 try {
-                                    dateId = await schedulePushNotification(newTask, "A task is due!", {}, { date: date.getDate() })
+                                    dateId = await schedulePushNotification(newTask, "A task is due!", {}, { date: date })
                                 } catch (error) {
                                     console.log(error)
                                 }
