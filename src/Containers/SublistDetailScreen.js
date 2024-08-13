@@ -9,8 +9,7 @@ import AppText from 'Components/AppText';
 import { TextInput } from 'react-native-gesture-handler';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import { deleteSublistItemNotification } from 'Notifications/Actionhelpers';
-import { formatTime } from 'util';
-import { formatDate } from 'util';
+import { formatTime, formatDate } from 'util';
 import { updateNotification } from 'Notifications';
 
 function SublistDetailScreen({ navigation, route, style }) {
@@ -79,8 +78,8 @@ function SublistDetailScreen({ navigation, route, style }) {
                     onBlur={() => {
                     }}
                     onSubmitEditing={async (text) => {
-                        let newTimeId;
-                        let newDateId;
+                        let newTimeId = null;
+                        let newDateId = null;
                         if (itemTitle == '')
                             setItemTitle('Untitled')
                         if (stateItem.notificationDateId != null && new Date() < new Date(stateItem.dueDate)) {
@@ -90,7 +89,7 @@ function SublistDetailScreen({ navigation, route, style }) {
                             newTimeId = await updateNotification(stateItem.notificationTimeId, itemTitle == '' ? 'Untitled' : itemTitle, "A task is due!", {}, { minute: new Date(stateItem.dueTime).getMinutes(), hour: new Date(stateItem.dueTime).getHours() })
 
                         }
-                        dispatch({ type: "SET_SUBLIST_TITLE", payload: { parentId: item.parentId, id: item.id, title: itemTitle == '' ? 'Untitled' : itemTitle } })
+                        dispatch({ type: "SET_SUBLIST_TITLE", payload: { parentId: item.parentId, id: item.id, title: itemTitle == '' ? 'Untitled' : itemTitle, notificationDateId: newDateId, notificationTimeId: newTimeId } })
                     }}
                 />
                 <IconButton

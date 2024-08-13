@@ -79,14 +79,21 @@ function listStateReducer(state = initialListState, action) {
 
         case types.SET_SUBLIST_TITLE:
             const newSublistTitleState = JSON.parse(JSON.stringify(state.lists))
+
             let sstIndex = newSublistTitleState.findIndex((item) => {
                 return item.id == action.payload.parentId
             })
             let sstIndex2 = newSublistTitleState[sstIndex].sublist.findIndex((item) => {
                 return item.id == action.payload.id
             })
-            newSublistTitleState[sstIndex].sublist[sstIndex2].title = action.payload.title
 
+            newSublistTitleState[sstIndex].sublist[sstIndex2].title = action.payload.title
+            if (action.payload.notificationDateId != null) {
+                newSublistTitleState[sstIndex].sublist[sstIndex2].notificationDateId = action.payload.notificationDateId
+            }
+            if (action.payload.notificationTimeId != null) {
+                newSublistTitleState[sstIndex].sublist[sstIndex2].notificationTimeId = action.payload.notificationTimeId
+            }
             return {
                 ...state,
                 lists: newSublistTitleState,
