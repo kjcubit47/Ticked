@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, Text, Animated } from 'react-native';
 import IconButton from './Buttons/IconButton';
 import { COLORS, STYLES } from 'Constants';
@@ -20,10 +20,12 @@ function SublistItem({ style, onPress, refresh, item }) {
     })
     // const stateItem = useSelector(state => state.listReducer.lists[item.parentId].sublist[item.id])
     const stateItem = useSelector(state => state.listReducer.lists[index1].sublist[index2])
-
-    const [itemComplete, setItemComplete] = useState(item.complete)
+    const [itemComplete, setItemComplete] = useState(stateItem.complete)
     const [itemImportant, setItemImportant] = useState(stateItem.important)
-
+    useEffect(() => {
+        setItemComplete(stateItem.complete)
+        setItemImportant(stateItem.important)
+    })
     const dispatch = useDispatch()
 
     const renderRightActions = (

@@ -4,19 +4,29 @@ import Screen from './Screen';
 import Header from 'Components/Header/Header';
 import IconButton from 'Components/Buttons/IconButton';
 import { COLORS, STYLES } from 'Constants';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AppText from 'Components/AppText';
 import { TextInput } from 'react-native-gesture-handler';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 
 function SublistDetailScreen({ navigation, route, style }) {
     const { item } = route.params
-    const [itemTitle, setItemTitle] = useState(item.title)
-    const [itemComplete, setItemComplete] = useState(item.complete)
-    const [itemImportant, setItemImportant] = useState(item.important)
-    const [notesText, setNotesText] = useState(item.note)
-    const [date, setDate] = useState(item.dueDate)
-    const [time, setTime] = useState(item.dueTime)
+    const state = useSelector(state => state.listReducer)
+
+    let index1 = state.lists.findIndex((current) => {
+        return item.parentId == current.id
+    })
+    let index2 = state.lists[index1].sublist.findIndex((current) => {
+        return item.id == current.id
+    })
+    // const stateItem = useSelector(state => state.listReducer.lists[item.parentId].sublist[item.id])
+    const stateItem = useSelector(state => state.listReducer.lists[index1].sublist[index2])
+    const [itemTitle, setItemTitle] = useState(stateItem.title)
+    const [itemComplete, setItemComplete] = useState(stateItem.complete)
+    const [itemImportant, setItemImportant] = useState(stateItem.important)
+    const [notesText, setNotesText] = useState(stateItem.note)
+    const [date, setDate] = useState(stateItem.dueDate)
+    const [time, setTime] = useState(stateItem.dueTime)
     const [datePickerVisible, setDatePickerVisible] = useState(false)
     const [timePickerVisible, setTimePickerVisible] = useState(false)
     const dispatch = useDispatch()

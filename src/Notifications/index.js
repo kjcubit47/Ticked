@@ -54,7 +54,7 @@ export async function registerForPushNotificationsAsync() {
 
     return token;
 }
-export function initNotifications(notificationListener, responseListener, setExpoPushToken, setNotification) {
+export function initNotifications(notificationListener, responseListener, setExpoPushToken, setNotification, setChannels) {
     registerForPushNotificationsAsync().then(token => token && setExpoPushToken(token));
 
     if (Platform.OS === 'android') {

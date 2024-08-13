@@ -5,6 +5,7 @@ import IconButton from './Buttons/IconButton';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { ScreenDimensions } from 'util';
+// TODO FIX DATETIMEPICKER WITH PATCH PACKAGE OR WAIT UNTIL DEV FIX
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import { schedulePushNotification } from 'Notifications';
 
