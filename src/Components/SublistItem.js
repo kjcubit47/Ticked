@@ -4,6 +4,7 @@ import IconButton from './Buttons/IconButton';
 import { COLORS, STYLES } from 'Constants';
 import { Swipeable } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
+import { deleteSublistItemNotification } from 'Notifications/Actionhelpers';
 
 
 
@@ -58,7 +59,6 @@ function SublistItem({ style, onPress, refresh, item }) {
                 <IconButton
                     onPress={
                         () => {
-
                             setItemImportant(!itemImportant);
                             dispatch({ type: 'SET_SUBLIST_IMPORTANT', payload: { parentId: item.parentId, itemId: item.id, important: !itemImportant } })
                             refresh();
@@ -70,7 +70,10 @@ function SublistItem({ style, onPress, refresh, item }) {
                 <Text style={stateItem.complete == true ? STYLES.ListTextComplete : STYLES.Text}>{item.title}</Text>
                 <IconButton
                     onPress={
-                        () => {
+                        async () => {
+                            if (!itemComplete) {
+                                await deleteSublistItemNotification(item.id, item.parentId)
+                            }
                             setItemComplete(!itemComplete);
                             dispatch({ type: 'SET_ITEM_COMPLETE', payload: { parentId: item.parentId, itemId: item.id, complete: !itemComplete } })
                             refresh();

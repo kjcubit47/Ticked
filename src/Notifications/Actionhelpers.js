@@ -46,12 +46,17 @@ export async function setItemComplete(payload) {
         payload: payload
     }
 }
-export async function deleteSublistItemNotification(payload) {
-    const parentId = payload.parentId
-    const id = payload.id
+export async function deleteSublistItemNotification(id, parentId) {
+    const tempState = JSON.parse(JSON.stringify(store.getState().listReducer.lists))
 
-    const sublistIndex = getSublistIndex(id, parentId)
-
+    const [sublistIndex, parentIndex] = getSublistIndex(id, parentId)
+    const item = tempState[parentIndex].sublist[sublistIndex]
+    if (item.notificationDateId != null) {
+        Notifications.cancelScheduledNotificationAsync(item.notificationDateId)
+    }
+    if (item.notificationTimeId != null) {
+        Notifications.cancelScheduledNotificationAsync(item.notificationTimeId)
+    }
 
 }
 
@@ -83,7 +88,7 @@ function getSublistIndex(id, parentId) {
     let itemIndex = tempState[parentIndex].sublist.findIndex((item) => {
         return item.id == id
     })
-    return itemIndex
+    return [itemIndex, parentIndex]
 }
 
 function getParentIndex(id) {

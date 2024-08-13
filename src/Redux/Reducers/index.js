@@ -112,13 +112,7 @@ function listStateReducer(state = initialListState, action) {
                 return item.id == action.payload.itemId
             })
             SetItemCompleteState[sicIndex].sublist[sicIndex2].complete = action.payload.complete
-            // let thisItem = SetItemCompleteState[sicIndex].sublist[sicIndex2]
-            // if (thisItem.dueDate != null) {
-            //     Notifications.cancelScheduledNotificationAsync(thisItem.notificationDateId)
-            // }
-            // if (thisItem.dueTime != null) {
-            //     Notifications.cancelScheduledNotificationAsync(thisItem.notificationTimeId)
-            // }
+
             return {
                 ...state,
                 lists: SetItemCompleteState

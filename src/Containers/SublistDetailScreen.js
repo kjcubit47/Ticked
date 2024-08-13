@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import AppText from 'Components/AppText';
 import { TextInput } from 'react-native-gesture-handler';
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import { deleteSublistItemNotification } from 'Notifications/Actionhelpers';
+import { formatTime } from 'util';
 
 function SublistDetailScreen({ navigation, route, style }) {
     const { item } = route.params
@@ -82,7 +84,10 @@ function SublistDetailScreen({ navigation, route, style }) {
                 />
                 <IconButton
                     onPress={
-                        () => {
+                        async () => {
+                            if (!itemComplete) {
+                                await deleteSublistItemNotification(item.id, item.parentId)
+                            }
                             setItemComplete(!itemComplete);
                             dispatch({ type: 'SET_ITEM_COMPLETE', payload: { parentId: item.parentId, itemId: item.id, complete: !itemComplete } })
                         }
@@ -108,7 +113,9 @@ function SublistDetailScreen({ navigation, route, style }) {
                 <View style={{ flexDirection: 'row', marginVertical: 10 }}>
                     <IconButton name={"alarm"} onPress={() => setTimePickerVisible(true)} />
                     {time != null &&
-                        <AppText>{new Date(time).getHours() % 12 + ":" + new Date(time).getMinutes()}</AppText>
+                        <AppText>{
+                            formatTime(new Date(time))
+                        }</AppText>
                     }
                 </View>
             </View>

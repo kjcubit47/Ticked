@@ -96,7 +96,7 @@ Notifications.setNotificationHandler({
 //     trigger: null,
 // });
 
-export async function schedulePushNotification(title, body, data, trigger) {
+export async function schedulePushNotification(title, body = "A task is due!", data = {}, trigger) {
 
     const notificationId = await Notifications.scheduleNotificationAsync({
         content: {
