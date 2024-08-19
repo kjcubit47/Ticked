@@ -197,18 +197,8 @@ function listStateReducer(state = initialListState, action) {
             })
 
             setSublistDueDateState[ssddIndex].sublist[ssddIndex2].dueDate = action.payload.dueDate
-            // // let ssddItem = setSublistDueDateState[ssddIndex].sublist[ssddIndex2]
-            // // if (ssddItem.dueDate != null) {
-            // //     Notifications.cancelScheduledNotificationAsync(ssddItem.notificationTimeId)
-            // //     let newDueDateId = schedulePushNotification(ssddItem.title, "A task is due!", {}, { date: new Date(ssddIndex.dueDate) })
-            // //     setSublistDueDateState[ssddIndex].sublist[ssddIndex2].notificationDateId = newDueDateId
-            // //     if (ssddItem.dueTime != null) {
-            // //         Notifications.cancelScheduledNotificationAsync(ssddItem.notificationTimeId)
-            // //         // RESCHEDULE FOR PROPER DATE + TIME ALREADY IN STATE
-            // //         let newDueTimeId = schedulePushNotification(ssddItem.title, "A task is due!", {}, { date: new Date(ssddItem.dueDate), minute: new Date(ssddItem.dueTime).getMinutes(), hour: new Date(ssddItem.dueTime).getHours() })
-            // //         setSublistDueDateState[ssddIndex].sublist[ssddIndex2].notificationTimeId = newDueTimeId
-            // //     }
-            // }
+            setSublistDueDateState[ssddIndex].sublist[ssddIndex2].notificationDateId = action.payload.notificationDateId
+
             return {
                 ...state,
                 lists: setSublistDueDateState
@@ -224,14 +214,9 @@ function listStateReducer(state = initialListState, action) {
             })
 
             setSublistDueTimeState[ssdtIndex].sublist[ssdtIndex2].dueTime = action.payload.dueTime
+            setSublistDueTimeState[ssdtIndex].sublist[ssdtIndex2].notificationTimeId = action.payload.notificationTimeId
 
-            // let ssdtItem = setSublistDueTimeState[ssdtIndex].sublist[ssdtIndex2]
 
-            // if (ssdtItem.notificationTimeId != null) {
-            //     Notifications.cancelScheduledNotificationAsync(ssdtItem.notificationTimeId)
-            //     let newTimeId = schedulePushNotification(ssdtItem.title, "A task is due!", {}, { minute: new Date(ssdtItem.dueTime).getMinutes(), hour: new Date(ssdtItem.dueTime).getHours() })
-            //     setSublistDueTimeState[ssdtIndex].sublist[ssdtIndex2].notificationTimeId = newTimeId
-            // }
 
             return {
                 ...state,

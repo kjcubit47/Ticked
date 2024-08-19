@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import AppText from 'Components/AppText';
 import { TextInput } from 'react-native-gesture-handler';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import { deleteSublistItemNotification, rescheduleItemNotifications } from 'Notifications/Actionhelpers';
+import { deleteSublistItemNotification, rescheduleItemNotifications, updateNotificationDate, updateNotificationTime } from 'Notifications/Actionhelpers';
 import { formatTime, formatDate } from 'util';
 import { updateNotification } from 'Notifications';
 
@@ -147,14 +147,17 @@ function SublistDetailScreen({ navigation, route, style }) {
             <DateTimePicker
                 isVisible={datePickerVisible}
                 date={new Date()}
-                onConfirm={(newDate) => {
+                onConfirm={async (newDate) => {
                     setDate(newDate)
                     setDatePickerVisible(false)
+
+                    let newId = await updateNotificationDate(item.id, item.parentId, newDate)
                     dispatch({
                         type: "SET_SUBLIST_DUE_DATE", payload: {
                             itemId: item.id,
                             parentId: item.parentId,
-                            dueDate: JSON.parse(JSON.stringify(newDate))
+                            dueDate: JSON.parse(JSON.stringify(newDate)),
+                            notificationDateId: newId
                         }
                     })
                 }}
@@ -168,14 +171,16 @@ function SublistDetailScreen({ navigation, route, style }) {
             <DateTimePicker
                 isVisible={timePickerVisible}
                 date={new Date()}
-                onConfirm={(newTime) => {
+                onConfirm={async (newTime) => {
                     setTime(newTime)
                     setTimePickerVisible(false)
+                    let newId = await updateNotificationTime(item.id, item.parentId, newTime)
                     dispatch({
                         type: "SET_SUBLIST_DUE_TIME", payload: {
                             itemId: item.id,
                             parentId: item.parentId,
-                            dueTime: JSON.parse(JSON.stringify(newTime))
+                            dueTime: JSON.parse(JSON.stringify(newTime)),
+                            notificationDateId: newId
                         }
                     })
                 }}

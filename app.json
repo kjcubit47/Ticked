@@ -20,22 +20,33 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/TICKED_APP_ICON.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.kjcubit47.TodoApp"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/TICKED_APP_ICON.png"
     },
     "plugins": [
       [
         "expo-notifications",
         {
           "icon": "./assets/TICKED_APP_ICON.png",
-          // "icon": "./local/assets/notification-icon.png",
           "color": "#ffffff"
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "2843300e-9235-4cbd-a692-26d5f1b20da6"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/2843300e-9235-4cbd-a692-26d5f1b20da6"
+    }
   }
 }

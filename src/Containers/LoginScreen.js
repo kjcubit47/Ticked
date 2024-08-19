@@ -11,12 +11,12 @@ function LoginScreen({ navigation }) {
             <Image style={{ top: 0, position: 'absolute' }} source={require("../../assets/LoginScreenBackground.jpeg")} />
             <View style={styles.buttonContainer}>
 
-                <AppButton title="Login" onPress={async () => {
+                {/* <AppButton title="Login" onPress={async () => {
                     await cancelAllScheduledNotificationsAsync()
                     dispatch({ type: "RESET_STATE" })
-                }} />
+                }} /> */}
                 {/* <AppButton title="Login" onPress={() => { navigation.navigate("SignUpScreen") }} /> */}
-                <AppButton title="Skip" onPress={() => { navigation.navigate("HomeScreen") }} />
+                <AppButton title="Continue" onPress={() => { navigation.navigate("HomeScreen") }} />
 
             </View>
         </Screen >);

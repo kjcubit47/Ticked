@@ -1,30 +1,32 @@
-import * as types from "../Redux/Actions/ActionTypes";
 import * as Notifications from "expo-notifications"
 import { schedulePushNotification } from "Notifications";
 import store from "Redux/Store";
 
-export async function setSublistDueDate(payload) {
-    const parentId = payload.parentId
-    const id = payload.id
-
-    const sublistIndex = getSublistIndex(id, parentId)
-
-    return {
-        type: types.SET_SUBLIST_DUE_DATE,
-        payload: payload
+export async function updateNotificationDate(id, parentId, newDate) {
+    const tempState = JSON.parse(JSON.stringify(store.getState().listReducer.lists))
+    const [sublistIndex, parentIndex] = getSublistIndex(id, parentId)
+    const item = tempState[parentIndex].sublist[sublistIndex]
+    let newId = null
+    if (item.notificationDateId != null) {
+        Notifications.cancelScheduledNotificationAsync(item.notificationDateId)
+        newId = await schedulePushNotification(item.title, "A task is due!", {}, { date: new Date(newDate) })
     }
+    return newId
 }
-export async function setSublistDueTime(payload) {
-    const parentId = payload.parentId
-    const id = payload.id
 
-    const sublistIndex = getSublistIndex(id, parentId)
-
-    return {
-        type: types.SET_SUBLIST_DUE_TIME,
-        payload: payload
+export async function updateNotificationTime(id, parentId, newTime) {
+    const tempState = JSON.parse(JSON.stringify(store.getState().listReducer.lists))
+    const [sublistIndex, parentIndex] = getSublistIndex(id, parentId)
+    const item = tempState[parentIndex].sublist[sublistIndex]
+    let newId = null
+    if (item.notificationTimeId != null) {
+        let tempTime = new Date(newTime)
+        Notifications.cancelScheduledNotificationAsync(item.notificationTimeId)
+        newId = await schedulePushNotification(item.title, "A task is due!", {}, { minute: tempTime.getMinutes(), hour: tempTime.getHours() })
     }
+    return newId
 }
+
 
 export async function rescheduleItemNotifications(id, parentId, complete) {
     if (complete) {
