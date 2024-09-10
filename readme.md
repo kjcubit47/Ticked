@@ -67,8 +67,6 @@ Ticked/
 - **React Navigation:** Navigation library for React Native.
 - **AsyncStorage:** Storage solution for saving data locally on the device.
 
-*(Include any other dependencies you might have used.)*
-
 ## Contributing
 
 Contributions are welcome! If you'd like to contribute to Ticked, please fork the repository and use a feature branch. Pull requests are warmly welcome.
